@@ -1,10 +1,12 @@
 import * as express from "express"
 import { myDataSource } from "./data-source"
 import LoginRouter from "./routes/login";
-const session = require("express-session")
 
+const session = require("express-session")
+const cors = require("cors");
 // create and setup express app
 const app = express();
+app.use(cors());
 app.use(express.json())
 
 //setup express-session
