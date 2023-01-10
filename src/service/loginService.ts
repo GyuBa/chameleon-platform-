@@ -3,7 +3,33 @@ import {createUser, readUser} from "../controller/UserController";
 import {UserInterface} from "../interface/UserInterface";
 
 const bcrypt = require("bcrypt")
+const passport = require('passport')
 const saltRounds = 10;
+
+
+export async function passPortSignIn(req, res, next){
+    console.log("passport start")
+    passport.authenticate('local', (err, user, info) => {
+        console.log('Passport', err, user, info);
+        if(err) {
+            console.log('Error', err);
+            return next(err);
+        }
+        if (info){
+            return res.status(401).send(info.message);
+        }
+
+        return req.login(user, loginErr => {
+            if(loginErr){
+                return next(loginErr)
+            }
+            console.log(user);
+
+            return res.status(200).send(user);
+        })
+    })
+    console.log('passport end')
+}
 
 /**
  * provides user sign-in

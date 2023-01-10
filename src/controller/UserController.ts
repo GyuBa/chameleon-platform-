@@ -45,6 +45,23 @@ export async function readUser(userEmail:string){
 
 }
 
+export async function findUserByID(id:number){
+    const userRepository = myDataSource.getRepository('User');
+    try{
+        console.log("ID", id);
+        const result = await userRepository
+            .createQueryBuilder("user")
+            .select(['user.id', 'user.email', 'user.name', 'user.password'])
+            .where('user.id="' + id + '"')
+            .getOne();
+        console.log(result)
+
+        return result;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 /**
  * Modify user data on user table
  * @param {UserInterface} user

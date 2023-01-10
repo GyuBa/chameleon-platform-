@@ -3,14 +3,17 @@ import {myDataSource} from "./data-source"
 import LoginRouter from "./routes/login";
 import { TypeormStore } from "connect-typeorm";
 
+const passportConfig = require('./passport');
 const session = require("express-session")
 const cors = require("cors");
 // create and setup express app
 const app = express();
+const passport = require('passport');
+
 app.use(cors());
 app.use(express.json())
 
-
+passportConfig();
 
 // establish database connection
 myDataSource
@@ -36,19 +39,10 @@ app.use(
     })
 );
 
+//passport
+app.use(passport.initialize())
+app.use(passport.session())
 
-//test
-app.get('/', (req, res, next) => {
-    if(req.session["num"] === undefined){
-        req.session['num'] = 1
-    }
-    else{
-        req.session['num'] = req.session['num'] + 1;
-    }
-
-
-    res.send(`Views : ${req.session['num']}`);
-})
 //routes
 app.use("/login", LoginRouter)
 
