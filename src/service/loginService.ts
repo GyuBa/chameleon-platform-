@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {createUser, readUser} from "../controller/UserController";
 import {UserInterface} from "../interface/UserInterface";
-
 const bcrypt = require("bcrypt")
 const passport = require('passport')
 const saltRounds = 10;
@@ -118,3 +117,8 @@ export async function userSignUp(req: Request, res: Response, next: Function) {
 
 }
 
+export function userInfo(req, res:Response, next:Function){
+    if(req.user)
+        console.log(req.user);
+
+}
