@@ -5,6 +5,10 @@
       "module": "commonjs",
       "moduleResolution": "node",
       "emitDecoratorMetadata": true,
-      "experimentalDecorators": true
+      "experimentalDecorators": true,
+      "typeRoots":  [
+         "./@types",
+         "./node_modules/@types"
+      ]
    }
 }
