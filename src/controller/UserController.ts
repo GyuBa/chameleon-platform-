@@ -1,16 +1,15 @@
 import {UserInterface} from "../interface/UserInterface";
 import {User} from "../entities/User";
-import {myDataSource} from "../data-source";
-
+import {myDataSource} from "../DataSource";
 
 
 /**
  * Create user data on user table
  * @param {UserInterface} userInput - user information to be added
  */
-export async function createUser(userInput:UserInterface){
+export async function createUser(userInput: UserInterface) {
     const userRepository = myDataSource.getRepository("User");
-    try{
+    try {
         const user = new User();
         user.email = userInput.email;
         user.password = userInput.password;
@@ -27,10 +26,10 @@ export async function createUser(userInput:UserInterface){
  * Search User data on user table
  * @param {string} userEmail - user Email to be searched
  */
-export async function readUser(userEmail:string){
+export async function readUser(userEmail: string) {
     const userRepository = myDataSource.getRepository("User");
     console.log("READ USER")
-    try{
+    try {
         const result = await userRepository
             .createQueryBuilder("user")
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
@@ -45,9 +44,9 @@ export async function readUser(userEmail:string){
 
 }
 
-export async function findUserByID(id:number){
+export async function findUserByID(id: number) {
     const userRepository = myDataSource.getRepository('User');
-    try{
+    try {
         console.log("ID", id);
         const result = await userRepository
             .createQueryBuilder("user")
@@ -66,8 +65,7 @@ export async function findUserByID(id:number){
  * Modify user data on user table
  * @param {UserInterface} user
  */
-export async function updateUser(user:UserInterface)
-{
+export async function updateUser(user: UserInterface) {
     const userRepository = myDataSource.getRepository("User");
     try {
         await userRepository
@@ -88,8 +86,7 @@ export async function updateUser(user:UserInterface)
  * Dekete user data on user table
  * @param user
  */
-export async function deleteUser(user:UserInterface)
-{
+export async function deleteUser(user: UserInterface) {
     const userRepository = myDataSource.getRepository("User");
     try {
         userRepository

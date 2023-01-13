@@ -7,20 +7,20 @@ const passport = require('passport')
 const saltRounds = 10;
 
 
-export async function passPortSignIn(req, res, next){
+export async function passPortSignIn(req, res, next) {
     console.log("passport start")
     passport.authenticate('local', (err, user, info) => {
         console.log('Passport', err, user, info);
-        if(err) {
+        if (err) {
             console.log('Error', err);
             return next(err);
         }
-        if (info){
+        if (info) {
             return res.status(401).send(info.message);
         }
 
         return req.login(user, loginErr => {
-            if(loginErr){
+            if (loginErr) {
                 return next(loginErr)
             }
             console.log(user);
@@ -65,8 +65,6 @@ export async function userSignIn(req: Request, res: Response, next: Function) {
             })
         }
     })
-
-
 }
 
 /**
@@ -82,19 +80,20 @@ export async function userSignIn(req: Request, res: Response, next: Function) {
  * @param {Function} next - Callback Function
  */
 export async function userSignUp(req: Request, res: Response, next: Function) {
-
     if (!(req.body.name && req.body.password && req.body.email)) {
         res.status(401).send({
             "msg": "non_field_errors"
         });
         return;
     }
+
     if (await readUser(req.body.email)) {
         res.status(401).send({
             "msg": "duplicated_email_error"
         });
         return;
     }
+
     bcrypt.genSalt(saltRounds, function (err, salt) {
         const {password} = req.body;
         if (err) {
@@ -114,7 +113,6 @@ export async function userSignUp(req: Request, res: Response, next: Function) {
             createUser(user);
         })
     })
-    res.status(200).send({"msg":"OK"});
-
+    res.status(200).send({"msg": "OK"});
 }
 

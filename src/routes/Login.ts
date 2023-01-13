@@ -1,12 +1,13 @@
 import * as express from "express"
-import { Request, Response } from "express"
-import { userSignIn, userSignUp} from "../service/loginService";
+import {Request, Response} from "express"
+import {userSignIn, userSignUp} from "../service/LoginService";
+import * as passport from "passport"
+
 const LoginRouter = express.Router()
-const passport = require('passport')
 
 export default LoginRouter
 
-LoginRouter.get('/', (req:Request, res:Response) => {
+LoginRouter.get('/', (req: Request, res: Response) => {
     res.send("Hello, World!")
 })
 
@@ -15,6 +16,7 @@ LoginRouter.post('/signin', userSignIn)
 LoginRouter.post('/signup', userSignUp)
 
 
+// TODO: 바꿀 것
 LoginRouter.post('/passport', (req:any, res, next) => {
     // POST /api/user/login
     passport.authenticate('local', (err, user, info) => {
@@ -33,7 +35,6 @@ LoginRouter.post('/passport', (req:any, res, next) => {
                 return next(loginErr);
             }
             return res.status(200).send(user)
-
         });
     })(req, res, next);
     // 미들웨어(router) 내의 미들웨어(passport)에는 (req, res, next)를 붙입니다.

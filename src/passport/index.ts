@@ -1,6 +1,9 @@
 import {findUserByID} from "../controller/UserController";
+
 const passport = require('passport')
-const local = require('./local')
+const local = require('./Local')
+// TODO: 바꿀 것 import
+
 module.exports = () => {
     passport.serializeUser((user, done) => {
         console.log('serial')
