@@ -1,7 +1,7 @@
 import * as express from "express"
-import {myDataSource} from "./data-source"
-import LoginRouter from "./routes/login";
-import { TypeormStore } from "connect-typeorm";
+import {myDataSource} from "./DataSource"
+import LoginRouter from "./routes/Login";
+import {TypeormStore} from "connect-typeorm";
 
 const passportConfig = require('./passport');
 const session = require("express-session")
@@ -40,11 +40,11 @@ app.use(
 );
 
 //passport
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 //routes
-app.use("/login", LoginRouter)
+app.use("/login", LoginRouter);
 
 // start express server
-app.listen(3000)
+app.listen(process.env.PORT || 3000);
