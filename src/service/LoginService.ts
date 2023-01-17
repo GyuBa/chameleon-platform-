@@ -115,8 +115,14 @@ export async function userSignUp(req: Request, res: Response, next: Function) {
     res.status(200).send({"msg": "OK"});
 }
 
-export function userInfo(req, res:Response, next:Function){
-    if(req.user)
-        console.log(req.user);
-
+export async function userInfo(req, res:Response, next:Function){
+    console.log('userInfo')
+    if(req.isAuthenticated()){
+        res.status(200).send(await req.user);
+        return;
+    }
+    else{
+        res.status(401).send({'msg': 'not_authenticated_error'});
+        return
+    }
 }
