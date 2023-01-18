@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {createUser, readUser} from "../controller/UserController";
 import {UserInterface} from "../interface/UserInterface";
-
 const bcrypt = require("bcrypt")
 const passport = require('passport')
 const saltRounds = 10;
@@ -116,3 +115,14 @@ export async function userSignUp(req: Request, res: Response, next: Function) {
     res.status(200).send({"msg": "OK"});
 }
 
+export async function userInfo(req, res:Response, next:Function){
+    console.log('userInfo')
+    if(req.isAuthenticated()){
+        res.status(200).send(await req.user);
+        return;
+    }
+    else{
+        res.status(401).send({'msg': 'not_authenticated_error'});
+        return
+    }
+}

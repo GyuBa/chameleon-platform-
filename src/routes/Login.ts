@@ -1,6 +1,6 @@
 import * as express from "express"
 import {Request, Response} from "express"
-import {userSignIn, userSignUp} from "../service/LoginService";
+import {userInfo, userSignIn, userSignUp} from "../service/LoginService";
 import * as passport from "passport"
 
 const LoginRouter = express.Router()
@@ -12,9 +12,9 @@ LoginRouter.get('/', (req: Request, res: Response) => {
 })
 
 
-LoginRouter.post('/signin', userSignIn)
-LoginRouter.post('/signup', userSignUp)
-
+LoginRouter.post('/signin', userSignIn);
+LoginRouter.post('/signup', userSignUp);
+LoginRouter.get('/user-info', userInfo);
 
 // TODO: 바꿀 것
 LoginRouter.post('/passport', (req:any, res, next) => {
