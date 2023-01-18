@@ -1,7 +1,7 @@
 import {readUser} from "../controller/UserController";
 import * as LocalStrategy from 'passport-local';
 import * as passport from "passport";
-const bcrypt = require('bcrypt');
+import * as bcrypt from 'bcrypt'
 
 export function local(){
     passport.use(new LocalStrategy(

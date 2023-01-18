@@ -4,11 +4,12 @@ import LoginRouter from "./routes/Login";
 import {TypeormStore} from "connect-typeorm";
 import {passportConfig} from "./passport";
 
-const session = require("express-session")
-const cors = require("cors");
+import * as session from "express-session";
+import * as cors from 'cors';
+import * as passport from 'passport'
 // create and setup express app
 const app = express();
-const passport = require('passport');
+
 
 app.use(cors());
 app.use(express.json())

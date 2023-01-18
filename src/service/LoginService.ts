@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import {createUser, readUser} from "../controller/UserController";
 import {UserInterface} from "../interface/UserInterface";
-const bcrypt = require("bcrypt")
-const passport = require('passport')
+import * as bcrypt from 'bcrypt'
+import * as passport from 'passport'
 const saltRounds = 10;
 
 
