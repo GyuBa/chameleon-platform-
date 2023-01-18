@@ -1,0 +1,21 @@
+name: Update test server (main, develop)
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/update-test-server
+	  
+jobs:
+  update-test-server:
+    name: Update test server
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Execute update
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: sh /opt/dev-platform-server/run.sh
