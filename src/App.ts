@@ -2,8 +2,8 @@ import * as express from "express"
 import {myDataSource} from "./DataSource"
 import LoginRouter from "./routes/Login";
 import {TypeormStore} from "connect-typeorm";
+import {passportConfig} from "./passport";
 
-const passportConfig = require('./passport');
 const session = require("express-session")
 const cors = require("cors");
 // create and setup express app

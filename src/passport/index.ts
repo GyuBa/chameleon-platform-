@@ -1,10 +1,9 @@
 import {findUserByID} from "../controller/UserController";
-
+import {local} from "./Local";
 const passport = require('passport')
-const local = require('./Local')
 // TODO: 바꿀 것 import
 
-module.exports = () => {
+export function passportConfig(){
     passport.serializeUser((user, done) => {
         console.log('serial')
         // router의 req.login 요청이 들어오면 실행된다.
@@ -23,6 +22,5 @@ module.exports = () => {
             return done(e);
         }
     });
-
     local();
-};
+}
