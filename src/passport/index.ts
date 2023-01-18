@@ -1,8 +1,6 @@
 import {findUserByID} from "../controller/UserController";
 import {local} from "./Local";
 import * as passport from 'passport'
-// TODO: 바꿀 것 import
-
 export function passportConfig(){
     passport.serializeUser((user:any, done) => {
         console.log('serial')

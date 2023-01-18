@@ -1,14 +1,16 @@
 import {Column, Entity, ManyToOne, OneToOne, Unique} from "typeorm"
 import {Common} from "./Common";
 import {Region} from "./Region";
+import {Model} from "./Model";
 
 // ubuntu:latest
 @Entity()
 export class Image extends Common {
-    // 외래키 해-줘
-    repository: string
-    tags: string
+    @Column()
+    repository: string;
 
+    @Column()
+    tags: string;
 
     @ManyToOne(
         () => Region,
@@ -16,6 +18,11 @@ export class Image extends Common {
     )
     region: Region;
 
+    @OneToOne(
+        () => Model,
+        (model) => model.image
+    )
+    model: Model;
 
 }
 
