@@ -5,7 +5,7 @@ on:
       - main
       - develop
       - feature/update-test-server
-	  
+
 jobs:
   update-test-server:
     name: Update test server
