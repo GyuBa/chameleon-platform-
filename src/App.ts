@@ -7,6 +7,7 @@ import {passportConfig} from "./passport";
 import * as session from "express-session";
 import * as cors from 'cors';
 import * as passport from 'passport'
+
 // create and setup express app
 const app = express();
 
