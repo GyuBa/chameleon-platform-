@@ -1,14 +1,14 @@
-name: Update test server (main, develop)
+name: Update development server (main, develop)
 on:
   push:
     branches:
       - main
       - develop
-      - feature/update-test-server
+      - feature/update-development-server
 
 jobs:
-  update-test-server:
-    name: Update test server
+  update-development-server:
+    name: Update development server
     runs-on: ubuntu-22.04
     steps:
       - name: Execute update
