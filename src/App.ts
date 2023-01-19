@@ -6,7 +6,7 @@ import {TypeormStore} from 'connect-typeorm';
 import * as session from 'express-session';
 import * as cors from 'cors';
 import * as passport from 'passport';
-import {PassportManager} from './passport/PassportUtils';
+import {PassportManager} from './passport/PassportManager';
 
 // create and setup express app
 const app = express();
