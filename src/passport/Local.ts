@@ -10,7 +10,6 @@ export function local() {
             passwordField: 'password',
         },
         async (userId, password, done) => {
-            console.log('passport login');
             try {
                 const user = await readUser(userId);
                 if (!(userId && password)) {

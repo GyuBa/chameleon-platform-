@@ -26,14 +26,12 @@ export async function createUser(userInput: UserInterface) {
  */
 export async function readUser(userEmail: string) {
     const userRepository = source.getRepository('User');
-    console.log('READ USER');
     try {
         const result = await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.email="' + userEmail + '"')
             .getOne();
-        console.log(result);
         return result;
     } catch (e) {
         console.log(e);
@@ -43,13 +41,11 @@ export async function readUser(userEmail: string) {
 export async function findUserByID(id: number) {
     const userRepository = source.getRepository('User');
     try {
-        console.log('ID', id);
         const result = await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.id="' + id + '"')
             .getOne();
-        console.log(result);
         return result;
     } catch (e) {
         console.log(e);

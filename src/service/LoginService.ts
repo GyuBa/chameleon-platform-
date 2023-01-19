@@ -7,11 +7,8 @@ const saltRounds = 10;
 
 
 export async function passportSignIn(req, res, next) {
-    console.log('passport start');
     passport.authenticate('local', (err, user, info) => {
-        console.log('Passport', err, user, info);
         if (err) {
-            console.log('Error', err);
             return next(err);
         }
         if (info) {
@@ -22,12 +19,10 @@ export async function passportSignIn(req, res, next) {
             if (loginErr) {
                 return next(loginErr);
             }
-            console.log(user);
 
             return res.status(200).send(user);
         });
     });
-    console.log('passport end');
 }
 
 /**
@@ -101,13 +96,11 @@ export async function userSignUp(req: Request, res: Response, next: () => void) 
         password: hash,
         name: req.body.name
     };
-    console.log(hash);
     await createUser(user);
     res.status(200).send({'msg': 'OK'});
 }
 
 export async function userInfo(req, res:Response, next:() => void){
-    console.log('userInfo');
     if(req.isAuthenticated()){
         res.status(200).send(await req.user);
         return;
@@ -119,24 +112,19 @@ export async function userInfo(req, res:Response, next:() => void){
 }
 
 export async function passportLogin(req, res, next){
-    // POST /api/user/login
     passport.authenticate('local', (err, user, info) => {
-        // (err, user, info) 는 passport의 done(err, data, logicErr) 세 가지 인자
         if (err) {
-            // 서버에 에러가 있는 경우
             console.error(err);
             next(err);
         }
         if (info) {
-            // 로직 상 에러가 있는 경우
             return res.status(401).send(info.reason);
         }
-        return req.login(user, loginErr => { // req.login() 요청으로 passport.serializeUser() 실행
+        return req.login(user, loginErr => {
             if (loginErr) {
                 return next(loginErr);
             }
             return res.status(200).send(user);
         });
     })(req, res, next);
-    // 미들웨어(router) 내의 미들웨어(passport)에는 (req, res, next)를 붙입니다.
 }
