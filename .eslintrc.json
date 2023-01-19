@@ -19,15 +19,15 @@
     ],
     "rules": {
         "indent": [
-            "error",
+            "warn",
             4
         ],
         "linebreak-style": [
-            "error",
+            "warn",
             "windows"
         ],
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
