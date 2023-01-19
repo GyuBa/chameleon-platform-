@@ -3,27 +3,6 @@ import {createUser, readUser} from '../controller/UserController';
 import {UserInterface} from '../interface/UserInterface';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
-const saltRounds = 10;
-
-
-export async function passportSignIn(req, res, next) {
-    passport.authenticate('local', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (info) {
-            return res.status(401).send(info.message);
-        }
-
-        return req.login(user, loginErr => {
-            if (loginErr) {
-                return next(loginErr);
-            }
-
-            return res.status(200).send(user);
-        });
-    });
-}
 
 /**
  * provides user sign-in
@@ -47,7 +26,6 @@ export async function userSignIn(req: Request, res: Response, next: () => void) 
     }
     const user = await readUser(email);
     const result = await bcrypt.compare(password, user.password);
-
     if (result) {
         res.status(200).send({
             'id': user.id,
@@ -87,44 +65,40 @@ export async function userSignUp(req: Request, res: Response, next: () => void) 
         });
         return;
     }
-    const {password} = req.body;
-    const salt = await bcrypt.genSaltSync(saltRounds);
-    const hash = await bcrypt.hashSync(password, salt);
+    const {email, name} = req.body;
+    const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
     const user: UserInterface = {
-        id: undefined,
-        email: req.body.email,
-        password: hash,
-        name: req.body.name
-    };
+        email,
+        name,
+        password
+    } as UserInterface;
     await createUser(user);
     res.status(200).send({'msg': 'OK'});
 }
 
-export async function userInfo(req, res:Response, next:() => void){
-    if(req.isAuthenticated()){
+export async function userInfo(req, res: Response, next: () => void) {
+    if (req.isAuthenticated()) {
         res.status(200).send(await req.user);
-        return;
-    }
-    else{
+    } else {
         res.status(401).send({'msg': 'not_authenticated_error'});
-        return;
     }
 }
 
-export async function passportLogin(req, res, next){
+export async function passportSignIn(req, res, next) {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
-            console.error(err);
-            next(err);
+            return next(err);
         }
         if (info) {
-            return res.status(401).send(info.reason);
+            return res.status(401).send(info.message);
         }
+
         return req.login(user, loginErr => {
             if (loginErr) {
                 return next(loginErr);
             }
+
             return res.status(200).send(user);
         });
-    })(req, res, next);
+    });
 }

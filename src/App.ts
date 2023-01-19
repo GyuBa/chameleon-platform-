@@ -2,11 +2,11 @@ import * as express from 'express';
 import {source} from './DataSource';
 import LoginRouter from './routes/Login';
 import {TypeormStore} from 'connect-typeorm';
-import {passportConfig} from './passport';
 
 import * as session from 'express-session';
 import * as cors from 'cors';
 import * as passport from 'passport';
+import {PassportManager} from './passport/PassportUtils';
 
 // create and setup express app
 const app = express();
@@ -15,7 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-passportConfig();
+PassportManager.init();
 
 // establish database connection
 source
