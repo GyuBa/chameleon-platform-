@@ -1,17 +1,14 @@
-import {Request, Response} from "express";
-import {createUser, readUser} from "../controller/UserController";
-import {UserInterface} from "../interface/UserInterface";
-const bcrypt = require("bcrypt")
-const passport = require('passport')
+import {Request, Response} from 'express';
+import {createUser, readUser} from '../controller/UserController';
+import {UserInterface} from '../interface/UserInterface';
+import * as bcrypt from 'bcrypt';
+import * as passport from 'passport';
 const saltRounds = 10;
 
 
-export async function passPortSignIn(req, res, next) {
-    console.log("passport start")
+export async function passportSignIn(req, res, next) {
     passport.authenticate('local', (err, user, info) => {
-        console.log('Passport', err, user, info);
         if (err) {
-            console.log('Error', err);
             return next(err);
         }
         if (info) {
@@ -20,14 +17,12 @@ export async function passPortSignIn(req, res, next) {
 
         return req.login(user, loginErr => {
             if (loginErr) {
-                return next(loginErr)
+                return next(loginErr);
             }
-            console.log(user);
 
             return res.status(200).send(user);
-        })
-    })
-    console.log('passport end')
+        });
+    });
 }
 
 /**
@@ -42,28 +37,28 @@ export async function passPortSignIn(req, res, next) {
  * @param {Response} res - Express Response
  * @param {Function} next - Callback Function
  */
-export async function userSignIn(req: Request, res: Response, next: Function) {
+export async function userSignIn(req: Request, res: Response, next: () => void) {
     const {email, password} = req.body;
     if (!(email && password)) {
         res.status(401).send({
-            "msg": "non_field_errors"
-        })
+            'msg': 'non_field_errors'
+        });
         return;
     }
     const user = await readUser(email);
-    bcrypt.compare(password, user.password, function (err, result) {
-        if (result) {
-            res.status(200).send({
-                "id": user.id,
-                "email": user.email,
-                "name": user.name
-            })
-        } else {
-            res.status(401).send({
-                "msg": "unable_credential_errors"
-            })
-        }
-    })
+    const result = await bcrypt.compare(password, user.password);
+
+    if (result) {
+        res.status(200).send({
+            'id': user.id,
+            'email': user.email,
+            'name': user.name
+        });
+    } else {
+        res.status(401).send({
+            'msg': 'unable_credential_errors'
+        });
+    }
 }
 
 /**
@@ -78,51 +73,58 @@ export async function userSignIn(req: Request, res: Response, next: Function) {
  * @param {Response} res - Express Response
  * @param {Function} next - Callback Function
  */
-export async function userSignUp(req: Request, res: Response, next: Function) {
+export async function userSignUp(req: Request, res: Response, next: () => void) {
     if (!(req.body.name && req.body.password && req.body.email)) {
         res.status(401).send({
-            "msg": "non_field_errors"
+            'msg': 'non_field_errors'
         });
         return;
     }
 
     if (await readUser(req.body.email)) {
         res.status(401).send({
-            "msg": "duplicated_email_error"
+            'msg': 'duplicated_email_error'
         });
         return;
     }
-
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        const {password} = req.body;
-        if (err) {
-            console.log(err);
-        }
-        bcrypt.hash(password, salt, function (err, hashedPassword) {
-            if (err) {
-                console.log(err);
-            }
-            const user: UserInterface = {
-                id: undefined,
-                email: req.body.email,
-                password: hashedPassword,
-                name: req.body.name
-            };
-            console.log(hashedPassword)
-            createUser(user);
-        })
-    })
-    res.status(200).send({"msg": "OK"});
+    const {password} = req.body;
+    const salt = await bcrypt.genSaltSync(saltRounds);
+    const hash = await bcrypt.hashSync(password, salt);
+    const user: UserInterface = {
+        id: undefined,
+        email: req.body.email,
+        password: hash,
+        name: req.body.name
+    };
+    await createUser(user);
+    res.status(200).send({'msg': 'OK'});
 }
 
-export async function userInfo(req, res:Response, next:Function){
-    console.log('userInfo')
+export async function userInfo(req, res:Response, next:() => void){
     if(req.isAuthenticated()){
         res.status(200).send(await req.user);
         return;
     }
     else{
         res.status(401).send({'msg': 'not_authenticated_error'});
-        return
+        return;
     }
+}
+
+export async function passportLogin(req, res, next){
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+            console.error(err);
+            next(err);
+        }
+        if (info) {
+            return res.status(401).send(info.reason);
+        }
+        return req.login(user, loginErr => {
+            if (loginErr) {
+                return next(loginErr);
+            }
+            return res.status(200).send(user);
+        });
+    })(req, res, next);
 }

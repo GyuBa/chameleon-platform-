@@ -1,0 +1,29 @@
+import {Column, Entity, ManyToOne, OneToOne, Unique} from 'typeorm';
+import {Common} from './Common';
+import {Region} from './Region';
+import {Model} from './Model';
+
+// ubuntu:latest
+@Entity()
+export class Image extends Common {
+    @Column()
+        repository: string;
+
+    @Column()
+        tags: string;
+
+    @ManyToOne(
+        () => Region,
+        (region) => region.images
+    )
+        region: Region;
+
+    @OneToOne(
+        () => Model,
+        (model) => model.image
+    )
+        model: Model;
+
+}
+
+// docker - image
