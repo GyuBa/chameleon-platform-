@@ -27,12 +27,11 @@ export async function createUser(userInput: UserInterface) {
 export async function readUser(userEmail: string) {
     const userRepository = source.getRepository('User');
     try {
-        const result = await userRepository
+        return await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.email="' + userEmail + '"')
             .getOne();
-        return result;
     } catch (e) {
         console.log(e);
     }
@@ -41,12 +40,11 @@ export async function readUser(userEmail: string) {
 export async function findUserByID(id: number) {
     const userRepository = source.getRepository('User');
     try {
-        const result = await userRepository
+        return await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.id="' + id + '"')
             .getOne();
-        return result;
     } catch (e) {
         console.log(e);
     }
@@ -84,5 +82,6 @@ export async function deleteUser(user: UserInterface) {
             .delete()
             .from(User)
             .where('user.id="' + user.id + '"');
-    } catch (e) { /* empty */ }
+    } catch (e) { /* empty */
+    }
 }

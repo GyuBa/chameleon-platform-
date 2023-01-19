@@ -1,10 +1,13 @@
-import {Column, Entity, OneToMany, OneToOne, Unique} from 'typeorm';
+import {Column, Entity, OneToMany} from 'typeorm';
 import {Common} from './Common';
 import {Image} from './Image';
 
 // ubuntu:latest
 @Entity()
 export class Region extends Common {
+    @Column()
+        name: string;
+
     @Column()
         host: string;
 
