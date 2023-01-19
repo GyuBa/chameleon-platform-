@@ -1,31 +1,31 @@
-import * as express from "express"
-import {myDataSource} from "./DataSource"
-import LoginRouter from "./routes/Login";
-import {TypeormStore} from "connect-typeorm";
-import {passportConfig} from "./passport";
+import * as express from 'express';
+import {source} from './DataSource';
+import LoginRouter from './routes/Login';
+import {TypeormStore} from 'connect-typeorm';
+import {passportConfig} from './passport';
 
-import * as session from "express-session";
+import * as session from 'express-session';
 import * as cors from 'cors';
-import * as passport from 'passport'
+import * as passport from 'passport';
 
 // create and setup express app
 const app = express();
 
 
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
 passportConfig();
 
 // establish database connection
-myDataSource
+source
     .initialize()
     .then(() => {
-        console.log("Data Source has been initialized!")
+        console.log('Data Source has been initialized!');
     })
     .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
-    })
+        console.error('Error during Data Source initialization:', err);
+    });
 
 //setup express-session
 app.use(
@@ -36,8 +36,8 @@ app.use(
             cleanupLimit: 2,
             limitSubquery: false, // If using MariaDB.
             ttl: 86400
-        }).connect(myDataSource.getRepository('Session')),
-        secret: "keyboard cat"
+        }).connect(source.getRepository('Session')),
+        secret: 'keyboard cat'
     })
 );
 
@@ -46,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //routes
-app.use("/login", LoginRouter);
+app.use('/login', LoginRouter);
 
 // start express server
 app.listen(process.env.PORT || 3000);

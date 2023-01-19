@@ -1,28 +1,28 @@
-import {Column, Entity, ManyToOne, OneToOne, Unique} from "typeorm"
-import {Common} from "./Common";
-import {Region} from "./Region";
-import {Model} from "./Model";
+import {Column, Entity, ManyToOne, OneToOne, Unique} from 'typeorm';
+import {Common} from './Common';
+import {Region} from './Region';
+import {Model} from './Model';
 
 // ubuntu:latest
 @Entity()
 export class Image extends Common {
     @Column()
-    repository: string;
+        repository: string;
 
     @Column()
-    tags: string;
+        tags: string;
 
     @ManyToOne(
         () => Region,
         (region) => region.images
     )
-    region: Region;
+        region: Region;
 
     @OneToOne(
         () => Model,
         (model) => model.image
     )
-    model: Model;
+        model: Model;
 
 }
 

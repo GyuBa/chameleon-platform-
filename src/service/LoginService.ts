@@ -1,13 +1,13 @@
-import {Request, Response} from "express";
-import {createUser, readUser} from "../controller/UserController";
-import {UserInterface} from "../interface/UserInterface";
-import * as bcrypt from 'bcrypt'
-import * as passport from 'passport'
+import {Request, Response} from 'express';
+import {createUser, readUser} from '../controller/UserController';
+import {UserInterface} from '../interface/UserInterface';
+import * as bcrypt from 'bcrypt';
+import * as passport from 'passport';
 const saltRounds = 10;
 
 
-export async function passPortSignIn(req, res, next) {
-    console.log("passport start")
+export async function passportSignIn(req, res, next) {
+    console.log('passport start');
     passport.authenticate('local', (err, user, info) => {
         console.log('Passport', err, user, info);
         if (err) {
@@ -20,14 +20,14 @@ export async function passPortSignIn(req, res, next) {
 
         return req.login(user, loginErr => {
             if (loginErr) {
-                return next(loginErr)
+                return next(loginErr);
             }
             console.log(user);
 
             return res.status(200).send(user);
-        })
-    })
-    console.log('passport end')
+        });
+    });
+    console.log('passport end');
 }
 
 /**
@@ -42,12 +42,12 @@ export async function passPortSignIn(req, res, next) {
  * @param {Response} res - Express Response
  * @param {Function} next - Callback Function
  */
-export async function userSignIn(req: Request, res: Response, next: Function) {
+export async function userSignIn(req: Request, res: Response, next: () => void) {
     const {email, password} = req.body;
     if (!(email && password)) {
         res.status(401).send({
-            "msg": "non_field_errors"
-        })
+            'msg': 'non_field_errors'
+        });
         return;
     }
     const user = await readUser(email);
@@ -55,14 +55,14 @@ export async function userSignIn(req: Request, res: Response, next: Function) {
 
     if (result) {
         res.status(200).send({
-            "id": user.id,
-            "email": user.email,
-            "name": user.name
-        })
+            'id': user.id,
+            'email': user.email,
+            'name': user.name
+        });
     } else {
         res.status(401).send({
-            "msg": "unable_credential_errors"
-        })
+            'msg': 'unable_credential_errors'
+        });
     }
 }
 
@@ -78,17 +78,17 @@ export async function userSignIn(req: Request, res: Response, next: Function) {
  * @param {Response} res - Express Response
  * @param {Function} next - Callback Function
  */
-export async function userSignUp(req: Request, res: Response, next: Function) {
+export async function userSignUp(req: Request, res: Response, next: () => void) {
     if (!(req.body.name && req.body.password && req.body.email)) {
         res.status(401).send({
-            "msg": "non_field_errors"
+            'msg': 'non_field_errors'
         });
         return;
     }
 
     if (await readUser(req.body.email)) {
         res.status(401).send({
-            "msg": "duplicated_email_error"
+            'msg': 'duplicated_email_error'
         });
         return;
     }
@@ -102,19 +102,19 @@ export async function userSignUp(req: Request, res: Response, next: Function) {
         name: req.body.name
     };
     console.log(hash);
-    createUser(user);
-    res.status(200).send({"msg": "OK"});
+    await createUser(user);
+    res.status(200).send({'msg': 'OK'});
 }
 
-export async function userInfo(req, res:Response, next:Function){
-    console.log('userInfo')
+export async function userInfo(req, res:Response, next:() => void){
+    console.log('userInfo');
     if(req.isAuthenticated()){
         res.status(200).send(await req.user);
         return;
     }
     else{
         res.status(401).send({'msg': 'not_authenticated_error'});
-        return
+        return;
     }
 }
 
@@ -135,7 +135,7 @@ export async function passportLogin(req, res, next){
             if (loginErr) {
                 return next(loginErr);
             }
-            return res.status(200).send(user)
+            return res.status(200).send(user);
         });
     })(req, res, next);
     // 미들웨어(router) 내의 미들웨어(passport)에는 (req, res, next)를 붙입니다.

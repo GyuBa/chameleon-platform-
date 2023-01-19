@@ -1,23 +1,23 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique} from "typeorm"
-import {Common} from "./Common";
-import {Model} from "./Model";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Common} from './Common';
+import {Model} from './Model';
 
 @Entity()
-@Unique(["email"])
+@Unique(['email'])
 export class User extends Common {
     // TODO: Options 제거할 수 있으면 날릴 것
     @Column()
-    email: string;
+        email: string;
 
     @Column()
-    password: string;
+        password: string;
 
     @Column()
-    name: string;
+        name: string;
 
     @ManyToOne(
         () => Model,
         (model) => model.register
     )
-    models: Model[];
+        models: Model[];
 }

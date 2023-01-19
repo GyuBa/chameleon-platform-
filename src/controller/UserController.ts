@@ -1,6 +1,6 @@
-import {UserInterface} from "../interface/UserInterface";
-import {User} from "../entities/User";
-import {myDataSource} from "../DataSource";
+import {UserInterface} from '../interface/UserInterface';
+import {User} from '../entities/User';
+import {source} from '../DataSource';
 
 
 /**
@@ -8,18 +8,16 @@ import {myDataSource} from "../DataSource";
  * @param {UserInterface} userInput - user information to be added
  */
 export async function createUser(userInput: UserInterface) {
-    const userRepository = myDataSource.getRepository("User");
+    const userRepository = source.getRepository('User');
     try {
         const user = new User();
         user.email = userInput.email;
         user.password = userInput.password;
         user.name = userInput.name;
         await userRepository.save(user);
-
     } catch (e) {
         console.log(e);
     }
-
 }
 
 /**
@@ -27,34 +25,31 @@ export async function createUser(userInput: UserInterface) {
  * @param {string} userEmail - user Email to be searched
  */
 export async function readUser(userEmail: string) {
-    const userRepository = myDataSource.getRepository("User");
-    console.log("READ USER")
+    const userRepository = source.getRepository('User');
+    console.log('READ USER');
     try {
         const result = await userRepository
-            .createQueryBuilder("user")
+            .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.email="' + userEmail + '"')
             .getOne();
-        console.log(result)
-
+        console.log(result);
         return result;
     } catch (e) {
         console.log(e);
     }
-
 }
 
 export async function findUserByID(id: number) {
-    const userRepository = myDataSource.getRepository('User');
+    const userRepository = source.getRepository('User');
     try {
-        console.log("ID", id);
+        console.log('ID', id);
         const result = await userRepository
-            .createQueryBuilder("user")
+            .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
             .where('user.id="' + id + '"')
             .getOne();
-        console.log(result)
-
+        console.log(result);
         return result;
     } catch (e) {
         console.log(e);
@@ -66,17 +61,16 @@ export async function findUserByID(id: number) {
  * @param {UserInterface} user
  */
 export async function updateUser(user: UserInterface) {
-    const userRepository = myDataSource.getRepository("User");
+    const userRepository = source.getRepository('User');
     try {
         await userRepository
-            .createQueryBuilder("user")
+            .createQueryBuilder('user')
             .update(user)
             .set({
                 email: user.email,
                 password: user.password,
                 name: user.name
-            })
-
+            });
     } catch (e) {
         console.log(e);
     }
@@ -87,14 +81,12 @@ export async function updateUser(user: UserInterface) {
  * @param user
  */
 export async function deleteUser(user: UserInterface) {
-    const userRepository = myDataSource.getRepository("User");
+    const userRepository = source.getRepository('User');
     try {
         userRepository
-            .createQueryBuilder("user")
+            .createQueryBuilder('user')
             .delete()
             .from(User)
-            .where('user.id="' + user.id + '"')
-    } catch (e) {
-
-    }
+            .where('user.id="' + user.id + '"');
+    } catch (e) { /* empty */ }
 }

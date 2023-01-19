@@ -1,33 +1,33 @@
-import {Column, Entity, ManyToOne, OneToOne, Unique} from "typeorm"
-import {Common} from "./Common";
-import {User} from "./User";
-import {Image} from "./Image";
+import {Column, Entity, ManyToOne, OneToOne, Unique} from 'typeorm';
+import {Common} from './Common';
+import {User} from './User';
+import {Image} from './Image';
 
 // ubuntu:latest
 @Entity()
 export class Model extends Common {
     @Column()
-    name:string;
+        name:string;
     @Column()
-    description: string;
+        description: string;
 
     @ManyToOne(
         () => User,
         (user) => user.models
     )
-    register:User;
+        register:User;
 
     @OneToOne(
         () => Image,
         (image) => image.model
     )
-    image:Image;
+        image:Image;
 
     @Column()
-    inputType:string;
+        inputType:string;
 
     @Column()
-    outputType:string;
+        outputType:string;
 }
 
 //Ai-Model
