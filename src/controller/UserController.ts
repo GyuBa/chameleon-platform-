@@ -52,19 +52,21 @@ export async function findUserByID(id: number) {
 
 /**
  * Modify user data on user table
- * @param {UserInterface} user
+ * @param {UserInterface} userData
  */
-export async function updateUser(user: UserInterface) {
+export async function updateUser(userData: UserInterface) {
     const userRepository = source.getRepository('User');
     try {
         await userRepository
-            .createQueryBuilder('user')
-            .update(user)
+            .createQueryBuilder()
+            .update(User)
             .set({
-                email: user.email,
-                password: user.password,
-                name: user.name
-            });
+                email: userData.email,
+                password: userData.password,
+                name: userData.name
+            })
+            .where('id= "' + userData.id + '"')
+            .execute();
     } catch (e) {
         console.log(e);
     }
@@ -85,3 +87,4 @@ export async function deleteUser(user: UserInterface) {
     } catch (e) { /* empty */
     }
 }
+
