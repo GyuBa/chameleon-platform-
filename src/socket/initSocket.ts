@@ -1,5 +1,5 @@
 import * as webSocket from 'ws';
-import {echo} from '../service/webSocket'
+import {echo} from '../service/WebSocket'
 export function initSocket(server) {
     const wss = new webSocket.Server({ server })
 

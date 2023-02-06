@@ -1,3 +1,5 @@
-import * as net from 'net'
-
-const srv = net.createServer()
+export function echo(ws, msg) {
+    if(msg == 'hi'){
+        ws.send('Hello');
+    }
+}
