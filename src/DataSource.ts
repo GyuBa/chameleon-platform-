@@ -8,6 +8,6 @@ export const source = new DataSource({
     password: 'password',
     database: 'mongle',
     entities: ['src/entities/*.ts'],
-    logging: true,
+    logging: false,
     synchronize: true,
 });
