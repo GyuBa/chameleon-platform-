@@ -49,4 +49,8 @@ app.use(passport.session());
 app.use('/login', LoginRouter);
 
 // start express server
-app.listen(process.env.PORT || 3000);
+const server = app.listen(process.env.PORT || 3000);
+
+//ws
+import {initSocket} from "./socket/initSocket";
+initSocket(server);
