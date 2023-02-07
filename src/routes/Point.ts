@@ -1,8 +1,9 @@
 import * as express from 'express';
-import {userPoint} from "../service/PointService";
+import {getUserPoint, updatePoint} from "../service/PointService";
 
 const PointRouter = express.Router();
 
-PointRouter.get('/',  userPoint);
+PointRouter.get('/',  getUserPoint);
+PointRouter.post('/update', updatePoint);
 
 export default PointRouter;
