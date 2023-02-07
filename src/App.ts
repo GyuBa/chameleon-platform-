@@ -7,6 +7,7 @@ import * as session from 'express-session';
 import * as cors from 'cors';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
+import PointRouter from "./routes/Point";
 
 // create and setup express app
 const app = express();
@@ -47,6 +48,7 @@ app.use(passport.session());
 
 //routes
 app.use('/login', LoginRouter);
+app.use('/point', PointRouter);
 
 // start express server
 app.listen(process.env.PORT || 3000);

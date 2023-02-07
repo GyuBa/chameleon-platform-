@@ -15,6 +15,7 @@ export async function createUser(userInput: UserInterface) {
         user.password = userInput.password;
         user.name = userInput.name;
         await userRepository.save(user);
+        return user;
     } catch (e) {
         console.log(e);
     }
@@ -84,4 +85,8 @@ export async function deleteUser(user: UserInterface) {
             .where('user.id="' + user.id + '"');
     } catch (e) { /* empty */
     }
+}
+
+export async function updateMoney(user: UserInterface, amount: number) {
+
 }
