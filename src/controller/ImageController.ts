@@ -4,7 +4,6 @@
  [ ] update
  */
 
-import {RegionInterface} from "../interface/RegionInterface";
 import {source} from "../DataSource";
 import {Region} from "../entities/Region";
 import {Image} from "../entities/Image";
@@ -23,7 +22,7 @@ export async function createImage(imageInput: ImageInterface, region: Region) {
     }
 }
 
-export async function findRegionById(id: number) {
+export async function findImagenById(id: number) {
     const imageRepository = source.getRepository('Image');
     try {
         return await imageRepository
@@ -36,7 +35,7 @@ export async function findRegionById(id: number) {
     }
 }
 
-export async function findRegionByProperty(tags: string, repository: string) {
+export async function findImageByProperty(tags: string, repository: string) {
     const regionRepository = source.getRepository('Region');
     try {
         return await regionRepository
