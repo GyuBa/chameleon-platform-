@@ -8,15 +8,17 @@ import {source} from "../DataSource";
 import {Region} from "../entities/Region";
 import {Image} from "../entities/Image";
 import {ImageInterface} from "../interface/ImageInterface";
+import {ObjectLiteral} from "typeorm";
 
-export async function createImage(imageInput: ImageInterface, region: Region) {
+export async function createImage(imageInput: ImageInterface, region: ObjectLiteral) {
     const imageRepository = source.getRepository('Image');
     try {
         const image = new Image();
         image.repository = imageInput.repository;
         image.tags = imageInput.tags;
-        image.region = region;
+        image.region = region as Region;
         await imageRepository.save(image);
+        return image;
     } catch (e) {
         console.error(e);
     }
