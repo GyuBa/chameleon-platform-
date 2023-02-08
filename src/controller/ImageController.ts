@@ -22,7 +22,7 @@ export async function createImage(imageInput: ImageInterface, region: Region) {
     }
 }
 
-export async function findImagenById(id: number) {
+export async function findImageById(id: number) {
     const imageRepository = source.getRepository('Image');
     try {
         return await imageRepository
