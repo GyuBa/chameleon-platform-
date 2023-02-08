@@ -1,7 +1,7 @@
-import {Request, Response} from 'express';
+import {Request} from 'express';
 import {DIR_PATH_UPLOADED_IMAGE} from "../constant/constants";
 
-export async function uploadImage(req: Request, res: Response, next: Function) {
+export async function uploadImage(req: Request) {
     const uploadFile = req.files.file;
     console.log(uploadFile);
     console.log(DIR_PATH_UPLOADED_IMAGE)
@@ -11,10 +11,11 @@ export async function uploadImage(req: Request, res: Response, next: Function) {
             path,
             function (err) {
                 if (err) {
-                    return res.status(500).send(err);
+                    console.error(err);
                 }
             });
-        req.path = path;
-        next();
+        (req as any).path = path;
+        return path;
     }
+    return '';
 }
