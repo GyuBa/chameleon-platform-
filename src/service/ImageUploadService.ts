@@ -7,12 +7,13 @@ export async function uploadImage(req: Request, res: Response, next: Function) {
     console.log(DIR_PATH_UPLOADED_IMAGE)
     if ("mv" in uploadFile) {
         const path = 'uploads/' + uploadFile.name;
-        uploadFile.mv(
+        await uploadFile.mv(
             path,
             function (err) {
                 if (err) {
                     return res.status(500).send(err);
                 }
             });
+        req.path = path;
     }
 }
