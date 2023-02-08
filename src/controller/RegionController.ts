@@ -16,6 +16,7 @@ export async function createRegion(regionInput: RegionInterface) {
         region.host = regionInput.host;
         region.port = regionInput.port;
         await regionRepository.save(region);
+        return region;
     } catch (e) {
         console.error(e);
     }
@@ -34,20 +35,20 @@ export async function findRegionById(id: number) {
     }
 }
 
-export async function findRegionByName(name: string) {
+export async function findRegionByHost(host: string) {
     const regionRepository = source.getRepository('Region');
     try {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('name=:name', {name: name})
+            .where('host=:host', {host: host})
             .getOne();
     } catch (e) {
         console.error(e);
     }
 }
 
-export async function findRegionByHost(port: number) {
+export async function findRegionByPort(port: number) {
     const regionRepository = source.getRepository('Region');
     try {
         return await regionRepository
