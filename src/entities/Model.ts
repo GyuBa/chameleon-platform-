@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, OneToOne, Unique} from 'typeorm';
+import {Column, Entity, JoinColumn, ManyToOne, OneToOne} from 'typeorm';
 import {Common} from './Common';
 import {User} from './User';
 import {Image} from './Image';
@@ -14,12 +14,14 @@ export class Model extends Common {
         () => User,
         (user) => user.models
     )
+    @JoinColumn()
         register: User;
 
     @OneToOne(
-        () => Image,
-        (image) => image.model
+        type => Image,
+        image => image.model
     )
+    @JoinColumn()
         image: Image;
 
     @Column()

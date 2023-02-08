@@ -38,7 +38,7 @@ export async function readUser(userEmail: string) {
 }
 
 export async function findUserByID(id: number) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
     try {
         return await userRepository
             .createQueryBuilder('user')
