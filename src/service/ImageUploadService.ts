@@ -15,5 +15,6 @@ export async function uploadImage(req: Request, res: Response, next: Function) {
                 }
             });
         req.path = path;
+        next();
     }
 }
