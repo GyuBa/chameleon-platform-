@@ -5,16 +5,21 @@ import {TypeormStore} from 'connect-typeorm';
 
 import * as session from 'express-session';
 import * as cors from 'cors';
+import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
+import UploadRouter from "./routes/Upload";
 
 // create and setup express app
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
+//setup express-file-upload
+app.use(fileUpload())
+
+//passport initialize
 PassportManager.init();
 
 // establish database connection
@@ -47,6 +52,7 @@ app.use(passport.session());
 
 //routes
 app.use('/login', LoginRouter);
+app.use('/upload', UploadRouter);
 
 // start express server
 app.listen(process.env.PORT || 3000);
