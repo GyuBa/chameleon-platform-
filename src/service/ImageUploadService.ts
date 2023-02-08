@@ -14,7 +14,6 @@ export async function uploadImage(req: Request) {
                     console.error(err);
                 }
             });
-        (req as any).path = path;
         return path;
     }
     return '';

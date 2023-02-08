@@ -1,11 +1,11 @@
 import * as express from 'express';
 import {Request, Response} from 'express';
-import {uploadImage} from "../service/ImageUploadService";
+import {importImage} from "../service/Docker";
 const UploadRouter = express.Router();
 
 UploadRouter.post('/', (req: Request, res: Response) => {
     res.send('Hello, World');
 });
-UploadRouter.post('/image', uploadImage);
+UploadRouter.post('/image', importImage);
 
 export default UploadRouter;
