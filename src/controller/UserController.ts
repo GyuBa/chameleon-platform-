@@ -1,22 +1,17 @@
-import {UserInterface} from '../interface/UserInterface';
 import {User} from '../entities/User';
 import {source} from '../DataSource';
 
 
 /**
  * Create user data on user table
- * @param {UserInterface} userInput - user information to be added
+ * @param {User} userInput - user information to be added
  */
-export async function createUser(userInput: UserInterface) {
+export async function createUser(user: User) {
     const userRepository = source.getRepository('User');
     try {
-        const user = new User();
-        user.email = userInput.email;
-        user.password = userInput.password;
-        user.name = userInput.name;
         await userRepository.save(user);
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -24,49 +19,43 @@ export async function createUser(userInput: UserInterface) {
  * Search User data on user table
  * @param {string} userEmail - user Email to be searched
  */
-export async function readUser(userEmail: string) {
+export async function findUserByEmail(email: string) {
     const userRepository = source.getRepository('User');
     try {
         return await userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.email', 'user.name', 'user.password'])
-            .where('user.email="' + userEmail + '"')
+            .where('user.email=:email', {email})
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
-export async function findUserByID(id: number) {
+export async function findUserById(id: number) {
     const userRepository = source.getRepository('User');
     try {
         return await userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.email', 'user.name', 'user.password'])
-            .where('user.id="' + id + '"')
+            .where('user.id=:id', {id})
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
 /**
  * Modify user data on user table
- * @param {UserInterface} user
+ * @param {User} user
  */
-export async function updateUser(user: UserInterface) {
+export async function updateUser(user: User) {
     const userRepository = source.getRepository('User');
     try {
         await userRepository
             .createQueryBuilder('user')
             .update(user)
-            .set({
-                email: user.email,
-                password: user.password,
-                name: user.name
-            });
+            .set(user);
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -74,14 +63,15 @@ export async function updateUser(user: UserInterface) {
  * Dekete user data on user table
  * @param user
  */
-export async function deleteUser(user: UserInterface) {
+export async function deleteUser(user: User) {
     const userRepository = source.getRepository('User');
     try {
         userRepository
             .createQueryBuilder('user')
             .delete()
             .from(User)
-            .where('user.id="' + user.id + '"');
-    } catch (e) { /* empty */
+            .where('user.id=:id', user);
+    } catch (e) {
+        console.error(e);
     }
 }

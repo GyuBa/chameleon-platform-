@@ -4,21 +4,11 @@ import LoginRouter from './routes/Login';
 import {TypeormStore} from 'connect-typeorm';
 
 import * as session from 'express-session';
-import * as cors from 'cors';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
 
 // create and setup express app
 const app = express();
-
-const whiteList = ["https://dev-client.chameleon.best", "https://localhost:3000", "http://localhost:3000"];
-app.use(cors({ origin: function (origin, callback) {
-        if (whiteList.indexOf(origin) != -1) { // 만일 whitelist 배열에 origin인자가 있을 경우
-            callback(null, true); // cors 허용
-        } else {
-            callback(new Error("Not Allowed Origin!")); // cors 비허용
-        }}, credentials: true}));
-app.use(express.json());
 
 PassportManager.init();
 
@@ -54,4 +44,4 @@ app.use(passport.session());
 app.use('/login', LoginRouter);
 
 // start express server
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 5000);

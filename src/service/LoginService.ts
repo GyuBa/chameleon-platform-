@@ -1,8 +1,8 @@
 import {Request, Response} from 'express';
-import {createUser, readUser} from '../controller/UserController';
-import {UserInterface} from '../interface/UserInterface';
+import {createUser, findUserByEmail} from '../controller/UserController';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
+import {User} from '../entities/User';
 
 /**
  * provides user sign-in
@@ -24,7 +24,7 @@ export async function userSignIn(req: Request, res: Response, next: () => void) 
         });
         return;
     }
-    const user = await readUser(email);
+    const user = await findUserByEmail(email);
     const result = await bcrypt.compare(password, user.password);
     if (result) {
         res.status(200).send({
@@ -59,7 +59,7 @@ export async function userSignUp(req: Request, res: Response, next: () => void) 
         return;
     }
 
-    if (await readUser(req.body.email)) {
+    if (await findUserByEmail(req.body.email)) {
         res.status(401).send({
             'msg': 'duplicated_email_error'
         });
@@ -67,11 +67,10 @@ export async function userSignUp(req: Request, res: Response, next: () => void) 
     }
     const {email, name} = req.body;
     const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
-    const user: UserInterface = {
-        email,
-        name,
-        password
-    } as UserInterface;
+    const user: User = new User();
+    user.email = email;
+    user.name = name;
+    user.password = password;
     await createUser(user);
     res.status(200).send({'msg': 'OK'});
 }
@@ -93,11 +92,10 @@ export async function passportSignIn(req, res, next) {
             return res.status(401).send(info.message);
         }
 
-        return req.login(user, loginErr => {
-            if (loginErr) {
-                return next(loginErr);
+        return req.login(user, error => {
+            if (error) {
+                return next(error);
             }
-
             return res.status(200).send(user);
         });
     })(req, res, next);
