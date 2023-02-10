@@ -53,15 +53,17 @@ export async function findUserById(id: number) {
 
 /**
  * Modify user data on user table
- * @param {UserInterface} user
+ * @param {UserInterface} userData
  */
-export async function updateUser(user: UserInterface) {
+export async function updateUser(userData: UserInterface) {
     const userRepository = source.getRepository('User');
     try {
         await userRepository
-            .createQueryBuilder('user')
-            .update(user)
-            .set(user);
+            .createQueryBuilder()
+            .update(User)
+            .set(userData)
+            .where('id=:id', userData)
+            .execute();
     } catch (e) {
         console.error(e);
     }

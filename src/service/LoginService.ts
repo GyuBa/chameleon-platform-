@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {createUser, readUser} from '../controller/UserController';
+import {createUser, readUser, updateUser} from '../controller/UserController';
 import {UserInterface} from '../interface/UserInterface';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
@@ -92,7 +92,7 @@ export async function passportSignIn(req, res, next) {
             return next(err);
         }
         if (info) {
-            return res.status(401).send(info.message);
+            return res.status(401).send(info.reason.msg);
         }
 
         return req.login(user, loginErr => {
@@ -103,4 +103,24 @@ export async function passportSignIn(req, res, next) {
             return res.status(200).send(user);
         });
     })(req, res, next);
+}
+
+
+export async function passwordModify(req, res, next) {
+    if (!req.isAuthenticated()) {
+        return res.status(401).send({'msg': 'not_authenticated_error'});
+    }
+    if (!(req.body.password)){
+        return res.status(401).send({'msg': 'non_field_error'});
+    }
+    const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
+    console.log(req.user);
+    try {
+        await updateUser({id: req.user.id, email: req.user.email, name: req.user.name, password: password});
+        return res.status(200).send({'msg': 'OK'});
+    }
+    catch (e) {
+        console.log(e);
+        return res.status(501).send({'msg': 'server_error'})
+    }
 }
