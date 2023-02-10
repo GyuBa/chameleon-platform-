@@ -17,7 +17,7 @@ export async function createUser(userInput: UserInterface) {
         await userRepository.save(user);
         return user;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -34,20 +34,20 @@ export async function readUser(userEmail: string) {
             .where('user.email="' + userEmail + '"')
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
-export async function findUserByID(id: number) {
+export async function findUserById(id: number) {
     const userRepository = source.getRepository('User');
     try {
         return await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
-            .where('user.id="' + id + '"')
+            .where('user.id=:id', {id})
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -61,13 +61,9 @@ export async function updateUser(user: UserInterface) {
         await userRepository
             .createQueryBuilder('user')
             .update(user)
-            .set({
-                email: user.email,
-                password: user.password,
-                name: user.name
-            });
+            .set(user);
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -82,11 +78,12 @@ export async function deleteUser(user: UserInterface) {
             .createQueryBuilder('user')
             .delete()
             .from(User)
-            .where('user.id="' + user.id + '"');
-    } catch (e) { /* empty */
+            .where('user.id=:id', user);
+    } catch (e) {
+        console.error(e);
     }
 }
 
 export async function updateMoney(user: UserInterface, amount: number) {
-
+    /* empty */
 }

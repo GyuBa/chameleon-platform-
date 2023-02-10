@@ -1,6 +1,6 @@
 import {Column, Entity, JoinColumn, OneToOne} from 'typeorm';
-import {Common} from "./Common";
-import {User} from "./User";
+import {Common} from './Common';
+import {User} from './User';
 
 
 @Entity()
@@ -9,6 +9,6 @@ export class Wallet extends Common{
         point: number;
 
     @OneToOne(() => User)
-    @JoinColumn({name: 'user_id', referencedColumnName: 'id'})
-    user: User;
+    @JoinColumn({name: 'userId', referencedColumnName: 'id'})
+        user: User;
 }
