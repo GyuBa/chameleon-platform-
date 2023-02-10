@@ -2,7 +2,6 @@ import {UserInterface} from '../interface/UserInterface';
 import {User} from '../entities/User';
 import {source} from '../DataSource';
 
-
 /**
  * Create user data on user table
  * @param {UserInterface} userInput - user information to be added

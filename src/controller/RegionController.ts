@@ -1,12 +1,6 @@
-/* TODO
- [x] create
- [x] find by name, host, id
- [ ] update
- */
-
-import {RegionInterface} from "../interface/RegionInterface";
-import {source} from "../DataSource";
-import {Region} from "../entities/Region";
+import {RegionInterface} from '../interface/RegionInterface';
+import {source} from '../DataSource';
+import {Region} from '../entities/Region';
 
 export async function createRegion(regionInput: RegionInterface) {
     const regionRepository = source.getRepository('Region');
