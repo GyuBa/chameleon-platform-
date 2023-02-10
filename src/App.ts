@@ -14,6 +14,7 @@ import PointRouter from "./routes/Point";
 
 // create and setup express app
 const app = express();
+
 app.use(express.json());
 
 //setup express-file-upload

@@ -1,4 +1,5 @@
-import {findUserById, readUser} from '../controller/UserController';
+import {findUserById, findUserByEmail} from '../controller/UserController';
+
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
@@ -25,7 +26,7 @@ export class PassportManager {
             },
             async (userId, password, done) => {
                 try {
-                    const user = await readUser(userId);
+                    const user = await findUserByEmail(userId);
                     if (!(userId && password)) {
                         return done(null, false, {reason: {msg: 'non_field_errors'}});
                     }
