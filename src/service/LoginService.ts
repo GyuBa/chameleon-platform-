@@ -3,6 +3,7 @@ import {createUser, readUser} from '../controller/UserController';
 import {UserInterface} from '../interface/UserInterface';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
+import {createWallet} from "../controller/WalletController";
 
 /**
  * provides user sign-in
@@ -67,12 +68,13 @@ export async function userSignUp(req: Request, res: Response, next: () => void) 
     }
     const {email, name} = req.body;
     const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
-    const user: UserInterface = {
+    const userInterface: UserInterface = {
         email,
         name,
         password
     } as UserInterface;
-    await createUser(user);
+    const user = await createUser(userInterface);
+    await createWallet(user);
     res.status(200).send({'msg': 'OK'});
 }
 

@@ -9,11 +9,11 @@ import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
 import UploadRouter from "./routes/Upload";
+import PointRouter from "./routes/Point";
+
 
 // create and setup express app
 const app = express();
-
-app.use(cors());
 app.use(express.json());
 
 //setup express-file-upload
@@ -53,6 +53,8 @@ app.use(passport.session());
 //routes
 app.use('/login', LoginRouter);
 app.use('/upload', UploadRouter);
+app.use('/point', PointRouter);
+
 
 // start express server
 app.listen(process.env.PORT || 3000);
