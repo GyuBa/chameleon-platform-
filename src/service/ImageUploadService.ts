@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import {DIR_PATH_UPLOADED_IMAGE} from "../constant/constants";
+import {DIR_PATH_UPLOADED_IMAGE} from "../constant/Constants";
 
 export async function uploadImage(req: Request) {
     const uploadFile = req.files.file;
