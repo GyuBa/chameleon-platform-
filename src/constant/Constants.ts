@@ -1,0 +1,1 @@
+export const DIR_PATH_UPLOADED_IMAGE = `${__dirname}/temp/image/`;

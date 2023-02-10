@@ -10,9 +10,9 @@ LoginRouter.get('/', (req: Request, res: Response) => {
     res.send('Hello, World!');
 });
 
-LoginRouter.post('/sign-in', userSignIn);
+LoginRouter.post('/sign-in', passportSignIn);
 LoginRouter.post('/sign-up', userSignUp);
 LoginRouter.get('/info', userInfo);
 LoginRouter.post('/modify-password', passwordModify);
 // TODO: 바꿀 것
-LoginRouter.post('/sign-in-passport', passportSignIn);
+LoginRouter.post('/sign-in-legacy', userSignIn);

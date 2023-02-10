@@ -2,7 +2,6 @@ import {UserInterface} from '../interface/UserInterface';
 import {User} from '../entities/User';
 import {source} from '../DataSource';
 
-
 /**
  * Create user data on user table
  * @param {UserInterface} userInput - user information to be added
@@ -15,8 +14,9 @@ export async function createUser(userInput: UserInterface) {
         user.password = userInput.password;
         user.name = userInput.name;
         await userRepository.save(user);
+        return user;
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -33,20 +33,21 @@ export async function readUser(userEmail: string) {
             .where('user.email="' + userEmail + '"')
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
-export async function findUserByID(id: number) {
-    const userRepository = source.getRepository('User');
+export async function findUserById(id: number) {
+    const userRepository = source.getRepository(User);
+
     try {
         return await userRepository
             .createQueryBuilder('user')
             .select(['user.id', 'user.email', 'user.name', 'user.password'])
-            .where('user.id="' + id + '"')
+            .where('user.id=:id', {id})
             .getOne();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -60,15 +61,11 @@ export async function updateUser(userData: UserInterface) {
         await userRepository
             .createQueryBuilder()
             .update(User)
-            .set({
-                email: userData.email,
-                password: userData.password,
-                name: userData.name
-            })
-            .where('id= "' + userData.id + '"')
+            .set(userData)
+            .where('id=:id', userData)
             .execute();
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -83,8 +80,12 @@ export async function deleteUser(user: UserInterface) {
             .createQueryBuilder('user')
             .delete()
             .from(User)
-            .where('user.id="' + user.id + '"');
-    } catch (e) { /* empty */
+            .where('user.id=:id', user);
+    } catch (e) {
+        console.error(e);
     }
 }
 
+export async function updateMoney(user: UserInterface, amount: number) {
+    /* empty */
+}

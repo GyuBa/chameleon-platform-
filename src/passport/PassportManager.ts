@@ -1,4 +1,4 @@
-import {findUserByID, readUser} from '../controller/UserController';
+import {findUserById, readUser} from '../controller/UserController';
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
@@ -11,7 +11,7 @@ export class PassportManager {
 
         passport.deserializeUser(async (id: any, done) => {
             try {
-                return done(null, await findUserByID(id));
+                return done(null, await findUserById(id));
             } catch (e) {
                 console.error(e);
                 return done(e);
