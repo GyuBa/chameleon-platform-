@@ -2,7 +2,6 @@ import {UserInterface} from '../interface/UserInterface';
 import {User} from '../entities/User';
 import {source} from '../DataSource';
 
-
 /**
  * Create user data on user table
  * @param {UserInterface} userInput - user information to be added
@@ -39,7 +38,8 @@ export async function readUser(userEmail: string) {
 }
 
 export async function findUserById(id: number) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
+
     try {
         return await userRepository
             .createQueryBuilder('user')
