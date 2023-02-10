@@ -1,4 +1,5 @@
 import {findUserById, findUserByEmail} from '../controller/UserController';
+
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
