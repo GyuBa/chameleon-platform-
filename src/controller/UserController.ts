@@ -37,7 +37,7 @@ export async function readUser(userEmail: string) {
     }
 }
 
-export async function findUserByID(id: number) {
+export async function findUserById(id: number) {
     const userRepository = source.getRepository(User);
     try {
         return await userRepository

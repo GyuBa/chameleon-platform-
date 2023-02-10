@@ -28,7 +28,7 @@ export async function findRegionById(id: number) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('id=:id', {id: id})
+            .where('id=:id', {id})
             .getOne();
     } catch (e) {
         console.error(e);
@@ -41,7 +41,7 @@ export async function findRegionByHost(host: string) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('host=:host', {host: host})
+            .where('host=:host', {host})
             .getOne();
     } catch (e) {
         console.error(e);

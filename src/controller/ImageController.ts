@@ -1,9 +1,3 @@
-/* TODO
- [x] create
- [x] find by id, property
- [ ] update
- */
-
 import {source} from "../DataSource";
 import {Region} from "../entities/Region";
 import {Image} from "../entities/Image";
@@ -30,7 +24,7 @@ export async function findImageById(id: number) {
         return await imageRepository
             .createQueryBuilder('image')
             .select()
-            .where('id=:id', {id: id})
+            .where('id=:id', {id})
             .getOne();
     } catch (e) {
         console.error(e);
@@ -43,8 +37,9 @@ export async function findImageByProperty(tags: string, repository: string) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('tags = :tags AND repository = :repository', {tags: tags, repository: repository})
+            .where('tags=:tags AND repository=:repository', {tags: tags, repository: repository})
             .getOne();
+        // TODO: where 문법 더 깔끔한거 없는지?
     } catch (e) {
         console.error(e);
     }

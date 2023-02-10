@@ -1,14 +1,8 @@
-/* TODO
- [x] create
- [x] find by id, image
- [ ] update
- */
-
-import {source} from "../DataSource";
-import {Model} from "../entities/Model";
-import {Image} from "../entities/Image";
-import {ModelInterface} from "../interface/ModelInterface";
-import {User} from "../entities/User";
+import {source} from '../DataSource';
+import {Model} from '../entities/Model';
+import {Image} from '../entities/Image';
+import {ModelInterface} from '../interface/ModelInterface';
+import {User} from '../entities/User';
 
 export async function createModel(modelInput: ModelInterface, image: Image, user: User) {
     const modelRepository = source.getRepository('Model');
@@ -33,7 +27,7 @@ export async function findModelById(id: number) {
         return await modelRepository
             .createQueryBuilder('model')
             .select()
-            .where('id=:id', {id: id})
+            .where('id=:id', {id})
             .getOne();
     } catch (e) {
         console.error(e);
