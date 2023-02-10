@@ -28,7 +28,9 @@
       "passport": "^0.6.0",
       "passport-local": "^1.0.0",
       "typeorm": "0.3.11",
-      "typescript": "^4.9.4"
+      "typescript": "^4.9.4",
+      "websocket": "^1.0.34",
+      "ws": "^8.12.0"
    },
    "devDependencies": {
       "@types/express-session": "^1.17.5",
