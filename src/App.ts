@@ -4,12 +4,12 @@ import LoginRouter from './routes/Login';
 import {TypeormStore} from 'connect-typeorm';
 
 import * as session from 'express-session';
-import * as cors from 'cors';
 import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
 import UploadRouter from './routes/Upload';
 import PointRouter from './routes/Point';
+import {initSocket} from './socket/InitSocket';
 
 
 // create and setup express app
@@ -58,8 +58,7 @@ app.use('/point', PointRouter);
 
 
 // start express server
-const server = app.listen(process.env.PORT || 3000);
+const server = app.listen(process.env.PORT || 5000);
 
 //ws
-import {initSocket} from '/socket/InitSocket'
 initSocket(server);
