@@ -1,5 +1,5 @@
 import {Column, Entity, OneToMany} from 'typeorm';
-import {Common} from './Common';
+import {Common} from './interfaces/Common';
 import {Image} from './Image';
 
 // ubuntu:latest
