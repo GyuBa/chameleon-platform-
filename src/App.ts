@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 
 //setup express-file-upload
-app.use(fileUpload())
+app.use(fileUpload());
 
 //passport initialize
 PassportManager.init();
