@@ -37,8 +37,8 @@ export async function findImageByProperty(tags: string, repository: string) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('tags=:tags', {tags: tags})
-            .andWhere('repository=:repository', {repository: repository})
+            .where('tags=:tags', {tags})
+            .andWhere('repository=:repository', {repository})
             .getOne();
     } catch (e) {
         console.error(e);

@@ -50,6 +50,7 @@ export async function findUserById(id: number) {
  */
 export async function updateUser(userData: User) {
     const userRepository = source.getRepository(User);
+
     try {
         await userRepository
             .createQueryBuilder()

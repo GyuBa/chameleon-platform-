@@ -113,11 +113,11 @@ export async function passwordModify(req, res, next) {
     const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
     console.log(req.user);
     try {
-        await updateUser({id: req.user.id, email: req.user.email, name: req.user.name, password: password});
+        await updateUser({id: req.user.id, email: req.user.email, name: req.user.name, password: password} as User);
         return res.status(200).send({'msg': 'OK'});
     }
     catch (e) {
         console.log(e);
-        return res.status(501).send({'msg': 'server_error'})
+        return res.status(501).send({'msg': 'server_error'});
     }
 }
