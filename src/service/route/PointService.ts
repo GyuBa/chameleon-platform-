@@ -27,7 +27,6 @@ export class PointService extends RouteService {
     async updatePoint(req: Request, res: Response) {
         const {userId, amount} = req.body;
         await this.walletController.updateWallet(userId, amount);
-
         return res.status(200).send({
             'msg': 'ok',
         });
