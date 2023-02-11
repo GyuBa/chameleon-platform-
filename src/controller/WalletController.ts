@@ -1,6 +1,6 @@
 import {Wallet} from '../entities/Wallet';
 import {User} from '../entities/User';
-import {BaseController} from "./interfaces/BaseController";
+import {BaseController} from './interfaces/BaseController';
 
 export class WalletController extends BaseController<Wallet> {
     constructor() {
