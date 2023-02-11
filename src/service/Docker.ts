@@ -7,7 +7,7 @@ import {createImage} from '../controller/ImageController';
 import {ImageInterface} from '../interface/ImageInterface';
 import {createModel} from '../controller/ModelController';
 import {ModelInterface} from '../interface/ModelInterface';
-import {findUserById} from "../controller/UserController";
+import {findUserById} from '../controller/UserController';
 
 export async function importImage(req: Request, res: Response, next: () => void) {
     const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
@@ -21,7 +21,7 @@ export async function importImage(req: Request, res: Response, next: () => void)
             host,
             port
         } as RegionInterface;
-        region = createRegion(regionInput);
+        region = await createRegion(regionInput);
     }
 
     const imageInput: ImageInterface = {

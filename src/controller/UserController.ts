@@ -7,7 +7,7 @@ import {source} from '../DataSource';
  * @param {UserInterface} userInput - user information to be added
  */
 export async function createUser(userInput: UserInterface) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
     try {
         const user = new User();
         user.email = userInput.email;
@@ -25,7 +25,7 @@ export async function createUser(userInput: UserInterface) {
  * @param {string} userEmail - user Email to be searched
  */
 export async function readUser(userEmail: string) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
     try {
         return await userRepository
             .createQueryBuilder('user')
@@ -56,7 +56,7 @@ export async function findUserById(id: number) {
  * @param {UserInterface} userData
  */
 export async function updateUser(userData: UserInterface) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
     try {
         await userRepository
             .createQueryBuilder()
@@ -74,7 +74,7 @@ export async function updateUser(userData: UserInterface) {
  * @param user
  */
 export async function deleteUser(user: UserInterface) {
-    const userRepository = source.getRepository('User');
+    const userRepository = source.getRepository(User);
     try {
         userRepository
             .createQueryBuilder('user')

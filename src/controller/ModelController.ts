@@ -5,7 +5,7 @@ import {ModelInterface} from '../interface/ModelInterface';
 import {User} from '../entities/User';
 
 export async function createModel(modelInput: ModelInterface, image: Image, user: User) {
-    const modelRepository = source.getRepository('Model');
+    const modelRepository = source.getRepository(Model);
     try {
         const model = new Model();
         model.name = modelInput.name;
@@ -22,7 +22,7 @@ export async function createModel(modelInput: ModelInterface, image: Image, user
 }
 
 export async function findModelById(id: number) {
-    const modelRepository = source.getRepository('Model');
+    const modelRepository = source.getRepository(Model);
     try {
         return await modelRepository
             .createQueryBuilder('model')

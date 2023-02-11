@@ -3,7 +3,7 @@ import {source} from '../DataSource';
 import {User} from '../entities/User';
 
 export async function createWallet(user: User) {
-    const walletRepository = source.getRepository('Wallet');
+    const walletRepository = source.getRepository(Wallet);
     try {
         const wallet = new Wallet();
         wallet.user = user;
@@ -15,7 +15,7 @@ export async function createWallet(user: User) {
 }
 
 export async function findWalletByUserId(userId: number) {
-    const walletRepository = source.getRepository('Wallet');
+    const walletRepository = source.getRepository(Wallet);
     try {
         const wallet = await walletRepository.findOne({
             where: {user: {id: userId}},
@@ -27,7 +27,7 @@ export async function findWalletByUserId(userId: number) {
 }
 
 export async function updateWallet(userId: number, amount: number) {
-    const walletRepository = source.getRepository('Wallet');
+    const walletRepository = source.getRepository(Wallet);
     try {
         const wallet = await findWalletByUserId(userId);
         await walletRepository

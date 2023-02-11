@@ -3,7 +3,7 @@ import {source} from '../DataSource';
 import {Region} from '../entities/Region';
 
 export async function createRegion(regionInput: RegionInterface) {
-    const regionRepository = source.getRepository('Region');
+    const regionRepository = source.getRepository(Region);
     try {
         const region = new Region();
         region.name = regionInput.name;
@@ -17,7 +17,7 @@ export async function createRegion(regionInput: RegionInterface) {
 }
 
 export async function findRegionById(id: number) {
-    const regionRepository = source.getRepository('Region');
+    const regionRepository = source.getRepository(Region);
     try {
         return await regionRepository
             .createQueryBuilder('region')
@@ -30,7 +30,7 @@ export async function findRegionById(id: number) {
 }
 
 export async function findRegionByHost(host: string) {
-    const regionRepository = source.getRepository('Region');
+    const regionRepository = source.getRepository(Region);
     try {
         return await regionRepository
             .createQueryBuilder('region')
@@ -43,7 +43,7 @@ export async function findRegionByHost(host: string) {
 }
 
 export async function findRegionByPort(port: number) {
-    const regionRepository = source.getRepository('Region');
+    const regionRepository = source.getRepository(Region);
     try {
         return await regionRepository
             .createQueryBuilder('region')
