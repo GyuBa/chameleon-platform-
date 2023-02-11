@@ -48,7 +48,7 @@ export async function findRegionByPort(port: number) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('port=:port', {port: port})
+            .where('port=:port', {port})
             .getOne();
     } catch (e) {
         console.error(e);

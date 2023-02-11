@@ -41,7 +41,7 @@ export async function findModelByImage(image: Image) {
         return await modelRepository
             .createQueryBuilder('model')
             .select('model')
-            .where('imageId=:id', {id: image.id})
+            .where('imageId=:id', image)
             .getOne();
     } catch (e) {
         console.error(e);

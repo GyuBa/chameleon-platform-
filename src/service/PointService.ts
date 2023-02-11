@@ -1,4 +1,4 @@
-import {findWalletByUserId, updateWallet} from "../controller/WalletController";
+import {findWalletByUserId, updateWallet} from '../controller/WalletController';
 import {Request, Response} from 'express';
 
 //TODO management exception

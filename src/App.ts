@@ -61,5 +61,5 @@ app.use('/point', PointRouter);
 const server = app.listen(process.env.PORT || 3000);
 
 //ws
-import {initSocket} from "./socket/initSocket";
+import {initSocket} from "./socket/InitSocket";
 initSocket(server);

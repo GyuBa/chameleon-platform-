@@ -1,5 +1,5 @@
 import * as express from 'express';
-import {getUserPoint, updatePoint} from "../service/PointService";
+import {getUserPoint, updatePoint} from '../service/PointService';
 
 const PointRouter = express.Router();
 
