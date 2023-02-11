@@ -8,8 +8,8 @@ import * as cors from 'cors';
 import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
 import {PassportManager} from './passport/PassportManager';
-import UploadRouter from "./routes/Upload";
-import PointRouter from "./routes/Point";
+import UploadRouter from './routes/Upload';
+import PointRouter from './routes/Point';
 
 
 // create and setup express app
@@ -61,5 +61,5 @@ app.use('/point', PointRouter);
 const server = app.listen(process.env.PORT || 3000);
 
 //ws
-import {initSocket} from "./socket/InitSocket";
+import {initSocket} from '/socket/InitSocket'
 initSocket(server);
