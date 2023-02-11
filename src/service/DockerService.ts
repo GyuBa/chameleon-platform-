@@ -8,7 +8,7 @@ import {ImageInterface} from '../interface/ImageInterface';
 import {createModel} from '../controller/ModelController';
 import {ModelInterface} from '../interface/ModelInterface';
 import {findUserById} from '../controller/UserController';
-import {User} from "../entities/User";
+import {User} from '../entities/User';
 
 export async function importImage(req: Request, res: Response, next: () => void) {
     const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
