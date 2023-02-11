@@ -40,7 +40,6 @@ export async function findImageByProperty(tags: string, repository: string) {
             .where('tags=:tags', {tags})
             .andWhere('repository=:repository', {repository})
             .getOne();
-        // TODO: where 문법 더 깔끔한거 없는지?
     } catch (e) {
         console.error(e);
     }
