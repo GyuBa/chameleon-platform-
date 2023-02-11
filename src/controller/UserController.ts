@@ -19,7 +19,7 @@ export async function createUser(user: User) {
  * Search User data on user table
  * @param {string} userEmail - user Email to be searched
  */
-export async function readUser(userEmail: string) {
+export async function findUserByEmail(email: string) {
     const userRepository = source.getRepository(User);
     try {
         return await userRepository
@@ -66,7 +66,7 @@ export async function updateUser(userData: UserInterface) {
  * Dekete user data on user table
  * @param user
  */
-export async function deleteUser(user: UserInterface) {
+export async function deleteUser(user: User) {
     const userRepository = source.getRepository(User);
     try {
         userRepository
