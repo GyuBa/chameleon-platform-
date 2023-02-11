@@ -1,8 +1,8 @@
-import {source} from "../DataSource";
-import {Region} from "../entities/Region";
-import {Image} from "../entities/Image";
-import {ImageInterface} from "../interface/ImageInterface";
-import {ObjectLiteral} from "typeorm";
+import {source} from '../DataSource';
+import {Region} from '../entities/Region';
+import {Image} from '../entities/Image';
+import {ImageInterface} from '../interface/ImageInterface';
+import {ObjectLiteral} from 'typeorm';
 
 export async function createImage(imageInput: ImageInterface, region: ObjectLiteral) {
     const imageRepository = source.getRepository('Image');
@@ -37,9 +37,9 @@ export async function findImageByProperty(tags: string, repository: string) {
         return await regionRepository
             .createQueryBuilder('region')
             .select()
-            .where('tags=:tags AND repository=:repository', {tags: tags, repository: repository})
+            .where('tags=:tags', {tags})
+            .andWhere('repository=:repository', {repository})
             .getOne();
-        // TODO: where 문법 더 깔끔한거 없는지?
     } catch (e) {
         console.error(e);
     }

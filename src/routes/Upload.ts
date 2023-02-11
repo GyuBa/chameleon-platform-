@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {Request, Response} from 'express';
-import {importImage} from "../service/Docker";
+import {importImage} from '../service/DockerService';
 const UploadRouter = express.Router();
 
 UploadRouter.post('/', (req: Request, res: Response) => {

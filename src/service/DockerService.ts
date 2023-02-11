@@ -7,7 +7,8 @@ import {createImage} from '../controller/ImageController';
 import {ImageInterface} from '../interface/ImageInterface';
 import {createModel} from '../controller/ModelController';
 import {ModelInterface} from '../interface/ModelInterface';
-import {findUserById} from "../controller/UserController";
+import {findUserById} from '../controller/UserController';
+import {User} from '../entities/User';
 
 export async function importImage(req: Request, res: Response, next: () => void) {
     const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
@@ -45,7 +46,8 @@ export async function importImage(req: Request, res: Response, next: () => void)
         inputType,
         outputType
     } as ModelInterface;
-    await createModel(modelInput, image, await findUserById(req.user['id']));
+    await createModel(modelInput, image, await findUserById(req.user['id'] as number) as User);
+    // TODO: as 처리 깔끔하게
     // console.log(await findModelByImage(image));
     res.status(200).send({'msg': 'ok'});
 }
