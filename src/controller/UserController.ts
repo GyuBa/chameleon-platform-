@@ -1,18 +1,13 @@
-import {UserInterface} from '../interface/UserInterface';
 import {User} from '../entities/User';
 import {source} from '../DataSource';
 
 /**
  * Create user data on user table
- * @param {UserInterface} userInput - user information to be added
+ * @param {User} userInput - user information to be added
  */
 export async function createUser(userInput: UserInterface) {
     const userRepository = source.getRepository(User);
     try {
-        const user = new User();
-        user.email = userInput.email;
-        user.password = userInput.password;
-        user.name = userInput.name;
         await userRepository.save(user);
         return user;
     } catch (e) {
@@ -29,8 +24,7 @@ export async function readUser(userEmail: string) {
     try {
         return await userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.email', 'user.name', 'user.password'])
-            .where('user.email="' + userEmail + '"')
+            .where('user.email=:email', {email})
             .getOne();
     } catch (e) {
         console.error(e);
@@ -38,12 +32,11 @@ export async function readUser(userEmail: string) {
 }
 
 export async function findUserById(id: number) {
-    const userRepository = source.getRepository(User);
-
+    const userRepository = source.getRepository('User');
     try {
         return await userRepository
             .createQueryBuilder('user')
-            .select(['user.id', 'user.email', 'user.name', 'user.password'])
+            .select()
             .where('user.id=:id', {id})
             .getOne();
     } catch (e) {
