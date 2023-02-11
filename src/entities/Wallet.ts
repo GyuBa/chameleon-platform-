@@ -1,5 +1,5 @@
 import {Column, Entity, JoinColumn, OneToOne} from 'typeorm';
-import {Common} from './Common';
+import {Common} from './interfaces/Common';
 import {User} from './User';
 
 @Entity()

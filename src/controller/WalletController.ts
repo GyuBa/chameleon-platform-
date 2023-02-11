@@ -1,44 +1,47 @@
 import {Wallet} from '../entities/Wallet';
-import {source} from '../DataSource';
 import {User} from '../entities/User';
+import {BaseController} from "./interfaces/BaseController";
 
-export async function createWallet(user: User) {
-    const walletRepository = source.getRepository(Wallet);
-    try {
-        const wallet = new Wallet();
-        wallet.user = user;
-        await walletRepository.save(wallet);
-        return wallet;
-    } catch (e) {
-        console.error(e);
+export class WalletController extends BaseController<Wallet> {
+    constructor() {
+        super(Wallet);
     }
-}
 
-export async function findWalletByUserId(userId: number) {
-    const walletRepository = source.getRepository(Wallet);
-    try {
-        const wallet = await walletRepository.findOne({
-            where: {user: {id: userId}},
-        });
-        return wallet;
-    } catch (e) {
-        console.error(e);
+    async createWallet(user: User) {
+        try {
+            const wallet = new Wallet();
+            wallet.user = user;
+            await this.repository.save(wallet);
+            return wallet;
+        } catch (e) {
+            console.error(e);
+        }
     }
-}
 
-export async function updateWallet(userId: number, amount: number) {
-    const walletRepository = source.getRepository(Wallet);
-    try {
-        const wallet = await findWalletByUserId(userId);
-        await walletRepository
-            .createQueryBuilder()
-            .update(Wallet)
-            .set({
-                point: () => `point + ${amount}`
-            })
-            .where('userId=:userId', {userId})
-            .execute();
-    } catch (e) {
-        console.error(e);
+    async findWalletByUserId(userId: number) {
+        try {
+            const wallet = await this.repository.findOne({
+                where: {user: {id: userId}},
+            });
+            return wallet;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async updateWallet(userId: number, amount: number) {
+        try {
+            const wallet = await this.findWalletByUserId(userId);
+            await this.repository
+                .createQueryBuilder()
+                .update(wallet)
+                .set({
+                    point: () => `point + ${amount}`
+                })
+                .where('userId=:userId', {userId})
+                .execute();
+        } catch (e) {
+            console.error(e);
+        }
     }
 }

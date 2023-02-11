@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, OneToOne, Unique} from 'typeorm';
-import {Common} from './Common';
+import {Common} from './interfaces/Common';
 import {Region} from './Region';
 import {Model} from './Model';
 
@@ -23,7 +23,6 @@ export class Image extends Common {
         (model) => model.image
     )
         model: Model;
-
 }
 
 // docker - image

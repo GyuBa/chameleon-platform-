@@ -1,29 +1,29 @@
 import * as express from 'express';
 import {source} from './DataSource';
-import LoginRouter from './routes/Login';
 import {TypeormStore} from 'connect-typeorm';
-
 import * as session from 'express-session';
 import * as fileUpload from 'express-fileupload';
 import * as passport from 'passport';
-import {PassportManager} from './passport/PassportManager';
-import UploadRouter from './routes/Upload';
-import PointRouter from './routes/Point';
 import {initSocket} from './socket/InitSocket';
+import {LoginService} from './service/route/LoginService';
+import {UploadService} from './service/route/UploadService';
+import {PointService} from './service/route/PointService';
+import {PassportService} from './service/passport/PassportService';
 
 
-// create and setup express app
+// Create and setup express app
 const app = express();
 
 app.use(express.json());
 
-//setup express-file-upload
+// Setup express-file-upload
 app.use(fileUpload());
 
-//passport initialize
-PassportManager.init();
+// Passport initialize
+const passportService = new PassportService();
+passportService.init();
 
-// establish database connection
+// Establish database connection
 source
     .initialize()
     .then(() => {
@@ -33,7 +33,7 @@ source
         console.error('Error during Data Source initialization:', err);
     });
 
-//setup express-session
+// Setup express-session
 app.use(
     session({
         resave: false,
@@ -47,18 +47,18 @@ app.use(
     })
 );
 
-//passport
+// Passport
 app.use(passport.initialize());
 app.use(passport.session());
 
-//routes
-app.use('/login', LoginRouter);
-app.use('/upload', UploadRouter);
-app.use('/point', PointRouter);
+// Routes
+app.use('/login', new LoginService().router);
+app.use('/upload', new UploadService().router);
+app.use('/point', new PointService().router);
 
 
-// start express server
+// Start express server
 const server = app.listen(process.env.PORT || 5000);
 
-//ws
+// WS
 initSocket(server);
