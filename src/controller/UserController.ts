@@ -5,7 +5,7 @@ import {source} from '../DataSource';
  * Create user data on user table
  * @param {User} userInput - user information to be added
  */
-export async function createUser(userInput: UserInterface) {
+export async function createUser(user: User) {
     const userRepository = source.getRepository(User);
     try {
         await userRepository.save(user);
