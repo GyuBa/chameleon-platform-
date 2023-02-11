@@ -48,7 +48,7 @@ export async function findUserById(id: number) {
  * Modify user data on user table
  * @param {UserInterface} userData
  */
-export async function updateUser(userData: UserInterface) {
+export async function updateUser(userData: User) {
     const userRepository = source.getRepository(User);
     try {
         await userRepository
@@ -79,6 +79,6 @@ export async function deleteUser(user: User) {
     }
 }
 
-export async function updateMoney(user: UserInterface, amount: number) {
+export async function updateMoney(user: User, amount: number) {
     /* empty */
 }
