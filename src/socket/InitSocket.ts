@@ -1,7 +1,7 @@
 import * as webSocket from 'ws';
 
 export function initSocket(server) {
-    const wss = new webSocket.Server({server});
+    const wss = new webSocket.Server({server, path: '/websocket'});
 
     wss.on('connection', (ws, req) => {
         console.log(req.connection.remoteAddress);
@@ -13,11 +13,11 @@ export function initSocket(server) {
             const {type, data} = obj;
             console.log(obj);
             switch (type) {
-                case 'send_msg':
-                    if (data == 'hi') {
-                        ws.send('Hello');
-                    }
-                    break;
+            case 'send_msg':
+                if (data == 'hi') {
+                    ws.send('Hello');
+                }
+                break;
             }
         });
     });
