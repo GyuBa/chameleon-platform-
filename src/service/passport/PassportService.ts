@@ -1,9 +1,9 @@
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
-import {BaseService} from '../interfaces/BaseService';
+import {BindService} from "../interfaces/BindService";
 
-export class PassportService extends BaseService {
+export class PassportService extends BindService {
     serializeUserHandler(user: any, done) {
         return done(null, user.id);
     }

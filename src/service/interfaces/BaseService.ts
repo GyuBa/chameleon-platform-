@@ -4,7 +4,6 @@ import {WalletController} from '../../controller/WalletController';
 import {UserController} from '../../controller/UserController';
 import {RegionController} from '../../controller/RegionController';
 
-
 export abstract class BaseService {
     private static _imageController = new ImageController();
     protected get imageController(): ImageController {
