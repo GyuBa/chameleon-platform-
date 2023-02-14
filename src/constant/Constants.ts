@@ -10,4 +10,6 @@ export const RESPONSE_MSG = {
     DUPLICATED_EMAIL: 'duplicated_email_error',
     DUPLICATED_NAME: 'duplicated_name_error',
     NOT_AUTH: 'not_authenticated_error',
+    NOT_FOUND: 'not_found_error',
+    WRONG_INFO: 'wrong_information_error'
 };
