@@ -11,5 +11,6 @@ export const RESPONSE_MSG = {
     DUPLICATED_NAME: 'duplicated_name_error',
     NOT_AUTH: 'not_authenticated_error',
     NOT_FOUND: 'not_found_error',
-    WRONG_INFO: 'wrong_information_error'
+    WRONG_INFO: 'wrong_information_error',
+    WRONG_REQ: 'wrong_request_error'
 };

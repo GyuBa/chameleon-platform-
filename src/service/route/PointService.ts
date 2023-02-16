@@ -30,11 +30,12 @@ export class PointService extends RouteService {
     }
 
     async updatePoint(req: Request, res: Response) {
-        const {userId, amount} = req.body;
+        const {amount} = req.body;
         if(!req.isAuthenticated()) return res.status(501).send({'msg':RESPONSE_MSG.NOT_AUTH});
-        if(!(userId && amount)) return res.status(501).send({'msg':RESPONSE_MSG.NON_FIELD});
-        if (!(await this.walletController.findWalletByUserId(Number(userId)))) return res.status(501).send({'msg':RESPONSE_MSG.NOT_FOUND});
-        await this.walletController.updateWallet(userId, amount);
+        if(!amount) return res.status(501).send({'msg':RESPONSE_MSG.NON_FIELD});
+        if (!(await this.walletController.findWalletByUserId(Number(req.user['id'])))) return res.status(501).send({'msg':RESPONSE_MSG.NOT_FOUND});
+        if((await this.walletController.findWalletByUserId(Number(req.user['id'])))['point'] + Number(amount) < 0) return res.status(501).send({'msg':RESPONSE_MSG.WRONG_REQ});
+        await this.walletController.updateWallet(req.user['id'], amount);
         return res.status(200).send({
             'msg': 'ok',
         });
