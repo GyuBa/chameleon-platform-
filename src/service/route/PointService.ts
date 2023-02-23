@@ -25,7 +25,7 @@ export class PointService extends RouteService {
         if(!id) return res.status(501).send({'msg':RESPONSE_MSG.NON_FIELD});
         const wallet = await this.walletController.findWalletByUserId(Number(id));
         return res.status(200).send({
-            'wallet': wallet,
+            wallet
         });
     }
 
