@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import * as Dockerode from 'dockerode';
 import {User} from '../../entities/User';
-import {DIR_PATH_UPLOADED_IMAGE} from '../../constant/Constants';
+import {DIR_PATH_UPLOADED_IMAGE, RESPONSE_MSG} from '../../constant/Constants';
 import {Region} from '../../entities/Region';
 import {Image} from '../../entities/Image';
 import {Model} from '../../entities/Model';
@@ -37,7 +37,11 @@ export class UploadService extends RouteService {
         const docker = new Dockerode({host, port});
         let region = await this.regionController.findRegionByHost(host);
 
+        if(!(modelName && description && inputType && outputType)) return res.status(501).send({'msg': RESPONSE_MSG.NON_FIELD});
+
         if (region === null) {
+            if(!(regionName && host && port))
+                return res.status(501).send({'msg':RESPONSE_MSG.NON_FIELD});
             const regionInput: Region = new Region();
             regionInput.name = regionName;
             regionInput.host = host;
@@ -56,7 +60,7 @@ export class UploadService extends RouteService {
         } catch (e) {
             console.error(e);
             res.status(501).send({
-                'msg': 'something_was_wrong'
+                'msg': RESPONSE_MSG.SERVER_ERROR
             });
         }
 
