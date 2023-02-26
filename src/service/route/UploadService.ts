@@ -10,7 +10,7 @@ import {RouteService} from '../interfaces/route/RouteService';
 // TODO: 이름으로 ModelService와 "model/" path를 사용하는 것이 낫지 않은지?
 export class UploadService extends RouteService {
     initRouter() {
-        this.router.post('/image', this.importImage);
+        this.router.post('/model', this.importImage);
     }
 
     async uploadImage(req: Request, res: Response, next: Function) {
