@@ -33,11 +33,13 @@ export class UploadService extends RouteService {
 
     async importImage(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
+
+        if(!(modelName && description && inputType && outputType && req.files.file)) return res.status(501).send({'msg': RESPONSE_MSG.NON_FIELD});
+        if(!(req.isAuthenticated())) return res.status(501).send({'msg': RESPONSE_MSG.NOT_AUTH});
+
         const path = await this.uploadImage(req, res, next);
         const docker = new Dockerode({host, port});
         let region = await this.regionController.findRegionByHost(host);
-
-        if(!(modelName && description && inputType && outputType)) return res.status(501).send({'msg': RESPONSE_MSG.NON_FIELD});
 
         if (region === null) {
             if(!(regionName && host && port))
@@ -73,6 +75,6 @@ export class UploadService extends RouteService {
         await this.modelController.createModel(modelInput, image, await this.userController.findUserById(req.user['id'] as number) as User);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
-        res.status(200).send({'msg': 'ok'});
+        return res.status(200).send({'msg': 'ok'});
     }
 }
