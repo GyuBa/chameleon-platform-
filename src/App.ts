@@ -53,7 +53,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/login', new LoginService().router);
-app.use('/upload', new UploadService().router);
+app.use('/model', new UploadService().router);
 app.use('/point', new PointService().router);
 
 
