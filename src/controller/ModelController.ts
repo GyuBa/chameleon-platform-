@@ -49,4 +49,15 @@ export class ModelController extends BaseController<Model> {
             console.error(e);
         }
     }
+
+    async findModels() {
+        try {
+            return await this.repository
+                .createQueryBuilder('model')
+                .select('model')
+                .getMany();
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
