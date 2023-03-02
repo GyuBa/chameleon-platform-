@@ -11,6 +11,13 @@ import {RouteService} from '../interfaces/route/RouteService';
 export class UploadService extends RouteService {
     initRouter() {
         this.router.post('/upload', this.importImage);
+        this.router.get('/models', this.getModels);
+    }
+
+    async getModels(req: Request, res: Response, next:Function) {
+        if(!req.isAuthenticated()) res.status(401).send({'msg':RESPONSE_MSG.NOT_AUTH});
+        const result = await this.modelController.findModels();
+        return res.status(200).send({ result });
     }
 
     async uploadImage(req: Request, res: Response, next: Function) {
