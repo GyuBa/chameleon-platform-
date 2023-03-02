@@ -37,7 +37,7 @@ export class PointService extends RouteService {
         if((await this.walletController.findWalletByUserId(Number(req.user['id'])))['point'] + Number(amount) < 0) return res.status(501).send({'msg':RESPONSE_MSG.WRONG_REQ});
         await this.walletController.updateWallet(req.user['id'], amount);
         return res.status(200).send({
-            'msg': 'ok',
+            'msg': RESPONSE_MSG,
         });
     }
 }
