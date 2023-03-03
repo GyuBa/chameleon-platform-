@@ -1,16 +1,16 @@
 export const DIR_PATH_UPLOADED_IMAGE = `${__dirname}/temp/image/`;
 
 export const RESPONSE_MSG = {
-    OK: 'ok',
+    OK: {'msg':'ok'},
 
-    SERVER_ERROR: 'server_error',
+    SERVER_ERROR: {'msg':'server_error'},
 
-    NON_FIELD: 'non_filed_error',
-    UNABLE_CREDENTIAL: 'unable_credential_errors',
-    DUPLICATED_EMAIL: 'duplicated_email_error',
-    DUPLICATED_NAME: 'duplicated_name_error',
-    NOT_AUTH: 'not_authenticated_error',
-    NOT_FOUND: 'not_found_error',
-    WRONG_INFO: 'wrong_information_error',
-    WRONG_REQ: 'wrong_request_error'
+    NON_FIELD: {'msg': 'non_filed_error'},
+    UNABLE_CREDENTIAL: {'msg': 'unable_credential_errors'},
+    DUPLICATED_EMAIL: {'msg': 'duplicated_email_error'},
+    DUPLICATED_NAME: {'msg': 'duplicated_name_error'},
+    NOT_AUTH: {'msg': 'not_authenticated_error'},
+    NOT_FOUND: {'msg': 'not_found_error'},
+    WRONG_INFO: {'msg': 'wrong_information_error'},
+    WRONG_REQ: {'msg': 'wrong_request_error'}
 };
