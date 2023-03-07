@@ -38,6 +38,12 @@ export class UploadService extends RouteService {
         return '';
     }
 
+    async updateImage(req: Request, res: Response, next: Function) {
+        const {id} = req.body;
+
+
+    }
+
     async importImage(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
 
