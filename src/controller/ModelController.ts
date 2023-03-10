@@ -61,11 +61,11 @@ export class ModelController extends BaseController<Model> {
         }
     }
 
-    async updateModel(imageId: number, data: {modelName: string, description: string, inputType: string, outputType: string }) {
+    async updateModel(modelId: number, data: {modelName: string, description: string, inputType: string, outputType: string }) {
         const {modelName, description, inputType, outputType} = data;
 
         try {
-            const model = await this.findModelById(imageId);
+            const model = await this.findModelById(modelId);
             await this.repository
                 .createQueryBuilder()
                 .update(model)
