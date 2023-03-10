@@ -12,6 +12,7 @@ export class UploadService extends RouteService {
     initRouter() {
         this.router.post('/upload', this.importImage);
         this.router.get('/models', this.getModels);
+        this.router.put('/update', this.updateInformation);
     }
 
     async getModels(req: Request, res: Response, next:Function) {
@@ -38,10 +39,20 @@ export class UploadService extends RouteService {
         return '';
     }
 
-    async updateImage(req: Request, res: Response, next: Function) {
-        const {id} = req.body;
+    async updateInformation(req: Request, res: Response, next: Function) {
+        const {modelId, repository, modelName, description, inputType, outputType} = req.body;
 
+        if (!(modelId && repository && modelName && description && inputType && outputType)) return res.status(401).send(RESPONSE_MSG.NON_FIELD);
+        try {
+            const prevModel = await this.modelController.findModelById(modelId);
+            await this.modelController.updateModel(modelId, {name: modelName, inputType, outputType, description});
+            await this.imageController.updateImage(prevModel.image.id, {repository});
+        } catch (e) {
+            console.error(e);
+            return res.status(501).send(RESPONSE_MSG.SERVER_ERROR);
+        }
 
+        return res.status(200).send(RESPONSE_MSG.OK);
     }
 
     async importImage(req: Request, res: Response, next: Function) {
