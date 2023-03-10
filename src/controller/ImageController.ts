@@ -45,4 +45,20 @@ export class ImageController extends BaseController<Image>{
             console.error(e);
         }
     }
+
+    async updateImage(imageId: number, data: {repository: string}) {
+        const {repository} = data;
+
+        try {
+            const image = await this.findImageById(imageId);
+            await this.repository
+                .createQueryBuilder('image')
+                .update(image)
+                .set({
+                    repository: repository
+                })
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
