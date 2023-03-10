@@ -61,8 +61,8 @@ export class ModelController extends BaseController<Model> {
         }
     }
 
-    async updateModel(modelId: number, data: {modelName: string, description: string, inputType: string, outputType: string }) {
-        const {modelName, description, inputType, outputType} = data;
+    async updateModel(modelId: number, modelData: { name: string, description: string, inputType: string, outputType: string }) {
+        const {name, description, inputType, outputType} = modelData;
 
         try {
             const model = await this.findModelById(modelId);
@@ -70,7 +70,7 @@ export class ModelController extends BaseController<Model> {
                 .createQueryBuilder()
                 .update(model)
                 .set({
-                    name: modelName,
+                    name: name,
                     description: description,
                     inputType: inputType,
                     outputType: outputType

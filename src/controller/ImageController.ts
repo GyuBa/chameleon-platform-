@@ -46,8 +46,8 @@ export class ImageController extends BaseController<Image>{
         }
     }
 
-    async updateImage(imageId: number, data: {repository: string}) {
-        const {repository} = data;
+    async updateImage(imageId: number, imageData: { repository: string }) {
+        const {repository} = imageData;
 
         try {
             const image = await this.findImageById(imageId);
