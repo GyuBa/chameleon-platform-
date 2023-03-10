@@ -60,4 +60,23 @@ export class ModelController extends BaseController<Model> {
             console.error(e);
         }
     }
+
+    async updateModel(imageId: number, data: {modelName: string, description: string, inputType: string, outputType: string }) {
+        const {modelName, description, inputType, outputType} = data;
+
+        try {
+            const model = await this.findModelById(imageId);
+            await this.repository
+                .createQueryBuilder()
+                .update(model)
+                .set({
+                    name: modelName,
+                    description: description,
+                    inputType: inputType,
+                    outputType: outputType
+                })
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
