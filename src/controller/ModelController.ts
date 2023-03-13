@@ -61,6 +61,19 @@ export class ModelController extends BaseController<Model> {
         }
     }
 
+    async deleteModel(modelId) {
+        try {
+            await this.repository
+                .createQueryBuilder()
+                .delete()
+                .from(Model)
+                .where('id = :id', {id: modelId})
+                .execute();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     async updateModel(modelId: number, modelData: { name: string, description: string, inputType: string, outputType: string }) {
         const {name, description, inputType, outputType} = modelData;
 
@@ -74,7 +87,7 @@ export class ModelController extends BaseController<Model> {
                     description: description,
                     inputType: inputType,
                     outputType: outputType
-                })
+                });
         } catch (e) {
             console.error(e);
         }
