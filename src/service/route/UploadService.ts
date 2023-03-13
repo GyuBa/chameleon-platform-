@@ -55,6 +55,22 @@ export class UploadService extends RouteService {
         return res.status(200).send(RESPONSE_MSG.OK);
     }
 
+    async deleteModel(req: Request, res: Response, next: Function) {
+        const {modelId, imageId} = req.body;
+
+        if(!(modelId && imageId)) return res.status(401).send(RESPONSE_MSG.NON_FIELD);
+        if(!req.isAuthenticated()) return res.status(401).send(RESPONSE_MSG.NOT_AUTH);
+
+        try {
+            await this.modelController.deleteModel(modelId);
+            await this.imageController.deleteImage(imageId);
+        } catch (e) {
+            console.error(e);
+            return res.status(501).send(RESPONSE_MSG.SERVER_ERROR);
+        }
+
+        return res.status(200).send(RESPONSE_MSG.OK);
+    }
     async importImage(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
 
