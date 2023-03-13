@@ -61,4 +61,18 @@ export class ImageController extends BaseController<Image>{
             console.error(e);
         }
     }
+
+    async deleteImage(imageId: number) {
+
+        try {
+            await this.repository
+                .createQueryBuilder()
+                .delete()
+                .from(Image)
+                .where('id = :id', {id: imageId})
+                .execute();
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
