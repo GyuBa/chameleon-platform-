@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
 import {User} from '../../entities/User';
 import {RouteService} from '../interfaces/route/RouteService';
+import {RESPONSE_MSG} from '../../constant/Constants';
 
 export class LoginService extends RouteService {
     initRouter() {
@@ -30,9 +31,7 @@ export class LoginService extends RouteService {
     async userSignIn(req: Request, res: Response, next: Function) {
         const {email, password} = req.body;
         if (!(email && password)) {
-            res.status(401).send({
-                'msg': 'non_field_errors'
-            });
+            res.status(401).send(RESPONSE_MSG.NON_FIELD);
             return;
         }
         const user = await this.userController.findUserByEmail(email);
@@ -44,9 +43,7 @@ export class LoginService extends RouteService {
                 'name': user.name
             });
         } else {
-            res.status(401).send({
-                'msg': 'unable_credential_errors'
-            });
+            res.status(401).send(RESPONSE_MSG.UNABLE_CREDENTIAL);
         }
     }
 
@@ -64,16 +61,12 @@ export class LoginService extends RouteService {
      */
     async userSignUp(req: Request, res: Response, next: Function) {
         if (!(req.body.name && req.body.password && req.body.email)) {
-            res.status(401).send({
-                'msg': 'non_field_errors'
-            });
+            res.status(401).send(RESPONSE_MSG.NON_FIELD);
             return;
         }
 
         if (await this.userController.findUserByEmail(req.body.email)) {
-            res.status(401).send({
-                'msg': 'duplicated_email_error'
-            });
+            res.status(401).send(RESPONSE_MSG.DUPLICATED_EMAIL);
             return;
         }
         const {email, name} = req.body;
@@ -83,14 +76,14 @@ export class LoginService extends RouteService {
         user.name = name;
         user.password = password;
         await this.userController.createUser(user);
-        res.status(200).send({'msg': 'OK'});
+        res.status(200).send(RESPONSE_MSG.OK);
     }
 
     async userInfo(req: Request, res: Response, next: Function) {
         if (req.isAuthenticated()) {
             res.status(200).send(await req.user);
         } else {
-            res.status(401).send({'msg': 'not_authenticated_error'});
+            res.status(401).send(RESPONSE_MSG.NOT_AUTH);
         }
     }
 
@@ -115,10 +108,10 @@ export class LoginService extends RouteService {
 
     async passwordModify(req: Request, res: Response, next: Function) {
         if (!req.isAuthenticated()) {
-            return res.status(401).send({'msg': 'not_authenticated_error'});
+            return res.status(401).send(RESPONSE_MSG.NOT_AUTH);
         }
         if (!(req.body.password)) {
-            return res.status(401).send({'msg': 'non_field_error'});
+            return res.status(401).send(RESPONSE_MSG.NON_FIELD);
         }
         const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
         console.log(req.user);
@@ -126,10 +119,10 @@ export class LoginService extends RouteService {
             const user = new User();
             user.password = password;
             await this.userController.updateUser(user);
-            return res.status(200).send({'msg': 'OK'});
+            return res.status(200).send(RESPONSE_MSG.OK);
         } catch (e) {
             console.log(e);
-            return res.status(501).send({'msg': 'server_error'});
+            return res.status(501).send(RESPONSE_MSG.SERVER_ERROR);
         }
     }
 }
