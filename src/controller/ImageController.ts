@@ -45,4 +45,34 @@ export class ImageController extends BaseController<Image>{
             console.error(e);
         }
     }
+
+    async updateImage(imageId: number, imageData: { repository: string }) {
+        const {repository} = imageData;
+
+        try {
+            const image = await this.findImageById(imageId);
+            await this.repository
+                .createQueryBuilder('image')
+                .update(image)
+                .set({
+                    repository: repository
+                })
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async deleteImage(imageId: number) {
+
+        try {
+            await this.repository
+                .createQueryBuilder()
+                .delete()
+                .from(Image)
+                .where('id = :id', {id: imageId})
+                .execute();
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
