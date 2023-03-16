@@ -1,5 +1,5 @@
 import {source} from './DataSource';
-import {LoginService} from './service/http/LoginService';
+import {AuthService} from './service/http/AuthService';
 import {UploadService} from './service/http/UploadService';
 import {PointService} from './service/http/PointService';
 import {PassportService} from './service/http/passport/PassportService';
@@ -58,7 +58,7 @@ socketServer.addHandler(new DefaultSocketHandler());
 
 httpServer.addHandler(new ExpressService());
 httpServer.addHandler(new PassportService());
-httpServer.addHandler(new LoginService());
+httpServer.addHandler(new AuthService());
 httpServer.addHandler(new PointService());
 httpServer.addHandler(new UploadService());
 httpServer.addHandler(new WSService());

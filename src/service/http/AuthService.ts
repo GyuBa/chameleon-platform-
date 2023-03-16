@@ -7,7 +7,7 @@ import {RESPONSE_MESSAGE} from '../../constant/Constants';
 import {HTTPService} from "../interfaces/http/HTTPService";
 import {Server} from "http";
 
-export class LoginService extends HTTPService {
+export class AuthService extends HTTPService {
     init(app: Application, server: Server) {
         const router = express.Router();
         router.post('/sign-in', this.passportSignIn);
@@ -16,7 +16,7 @@ export class LoginService extends HTTPService {
         router.post('/modify-password', this.passwordModify);
         router.post('/sign-in-legacy', this.userSignIn);
         // TODO: 삭제 요망
-        app.use('/login', router);
+        app.use('/auth', router);
     }
 
     /**
