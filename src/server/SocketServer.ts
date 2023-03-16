@@ -1,8 +1,8 @@
-import * as net from "net";
-import {Server, Socket, SocketAddress} from "net";
-import {v4 as uuidv4} from "uuid";
-import SocketManager from "./manager/SocketManager";
-import {ISocket, SocketHandler} from "../types/chameleon-platform";
+import * as net from 'net';
+import {Server, Socket, SocketAddress} from 'net';
+import {v4 as uuidv4} from 'uuid';
+import SocketManager from './manager/SocketManager';
+import {ISocket, SocketHandler} from '../types/chameleon-platform';
 
 export default class SocketServer<SocketData, Manager extends SocketManager> {
     readonly server: Server;
@@ -65,7 +65,7 @@ export default class SocketServer<SocketData, Manager extends SocketManager> {
 
     close() {
         this.server.close(() => {
-            console.log(`SocketServer closed.`);
+            console.log('SocketServer closed.');
         });
     }
 }

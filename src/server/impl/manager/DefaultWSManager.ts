@@ -1,5 +1,5 @@
-import WSManager from "../../manager/WSManager";
-import {DefaultWSocket} from "../../../types/chameleon-platform";
+import WSManager from '../../manager/WSManager';
+import {DefaultWSocket} from '../../../types/chameleon-platform';
 
 export default class DefaultWSManager extends WSManager {
     json(data: any, sockets: DefaultWSocket[] = this.getAllSockets()) {

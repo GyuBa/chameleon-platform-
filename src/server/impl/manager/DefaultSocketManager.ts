@@ -1,5 +1,5 @@
-import SocketManager from "../../manager/SocketManager";
-import {DefaultSocket} from "../../../types/chameleon-platform";
+import SocketManager from '../../manager/SocketManager';
+import {DefaultSocket} from '../../../types/chameleon-platform';
 
 export default class DefaultSocketManager extends SocketManager {
 

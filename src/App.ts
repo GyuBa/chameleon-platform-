@@ -3,17 +3,17 @@ import {AuthService} from './service/http/AuthService';
 import {UploadService} from './service/http/UploadService';
 import {PointService} from './service/http/PointService';
 import {PassportService} from './service/http/passport/PassportService';
-import HTTPServer from "./server/HTTPServer";
-import {DefaultSocketServer, DefaultWSServer} from "./types/chameleon-platform";
-import WSServer from "./server/WSServer";
-import DefaultWSManager from "./server/impl/manager/DefaultWSManager";
-import SocketServer from "./server/SocketServer";
-import DefaultSocketManager from "./server/impl/manager/DefaultSocketManager";
-import PlatformServer from "./server/core/PlatformServer";
-import DefaultWSHandler from "./server/impl/handler/DefaultWSHandler";
-import DefaultSocketHandler from "./server/impl/handler/DefaultSocketHandler";
-import {WSService} from "./service/http/WSService";
-import {ExpressService} from "./service/http/ExpressService";
+import HTTPServer from './server/HTTPServer';
+import {DefaultSocketServer, DefaultWSServer} from './types/chameleon-platform';
+import WSServer from './server/WSServer';
+import DefaultWSManager from './server/impl/manager/DefaultWSManager';
+import SocketServer from './server/SocketServer';
+import DefaultSocketManager from './server/impl/manager/DefaultSocketManager';
+import PlatformServer from './server/core/PlatformServer';
+import DefaultWSHandler from './server/impl/handler/DefaultWSHandler';
+import DefaultSocketHandler from './server/impl/handler/DefaultSocketHandler';
+import {WSService} from './service/http/WSService';
+import {ExpressService} from './service/http/ExpressService';
 
 
 source

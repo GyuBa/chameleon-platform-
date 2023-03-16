@@ -6,8 +6,8 @@ import {DIR_PATH_UPLOADED_IMAGE, RESPONSE_MESSAGE} from '../../constant/Constant
 import {Region} from '../../entities/Region';
 import {Image} from '../../entities/Image';
 import {Model} from '../../entities/Model';
-import {HTTPService} from "../interfaces/http/HTTPService";
-import {Server} from "http";
+import {HTTPService} from '../interfaces/http/HTTPService';
+import {Server} from 'http';
 
 // TODO: 이름으로 ModelService와 "model/" path를 사용하는 것이 낫지 않은지?
 export class UploadService extends HTTPService {

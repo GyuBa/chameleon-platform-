@@ -1,8 +1,8 @@
 import * as express from 'express';
 import {Application, Request, Response} from 'express';
 import {RESPONSE_MESSAGE} from '../../constant/Constants';
-import {HTTPService} from "../interfaces/http/HTTPService";
-import {Server} from "http";
+import {HTTPService} from '../interfaces/http/HTTPService';
+import {Server} from 'http';
 
 // TODO: management exception
 export class PointService extends HTTPService {

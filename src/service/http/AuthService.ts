@@ -4,8 +4,8 @@ import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
 import {User} from '../../entities/User';
 import {RESPONSE_MESSAGE} from '../../constant/Constants';
-import {HTTPService} from "../interfaces/http/HTTPService";
-import {Server} from "http";
+import {HTTPService} from '../interfaces/http/HTTPService';
+import {Server} from 'http';
 
 export class AuthService extends HTTPService {
     init(app: Application, server: Server) {

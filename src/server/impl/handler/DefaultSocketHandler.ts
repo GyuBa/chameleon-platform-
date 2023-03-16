@@ -1,5 +1,5 @@
-import {DefaultSocket, DefaultSocketServer, SocketHandler} from "../../../types/chameleon-platform";
-import {BaseService} from "../../../service/interfaces/BaseService";
+import {DefaultSocket, DefaultSocketServer, SocketHandler} from '../../../types/chameleon-platform';
+import {BaseService} from '../../../service/interfaces/BaseService';
 
 
 export default class DefaultSocketHandler extends BaseService implements SocketHandler<DefaultSocketServer, DefaultSocket> {

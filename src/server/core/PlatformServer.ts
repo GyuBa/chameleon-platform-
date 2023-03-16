@@ -1,6 +1,6 @@
-import HTTPServer from "../HTTPServer";
-import * as fs from "fs";
-import {DefaultSocketServer, DefaultWSServer, PlatformConfig} from "../../types/chameleon-platform";
+import HTTPServer from '../HTTPServer';
+import * as fs from 'fs';
+import {DefaultSocketServer, DefaultWSServer, PlatformConfig} from '../../types/chameleon-platform';
 
 export default class PlatformServer {
     static httpServer: HTTPServer;

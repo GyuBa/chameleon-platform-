@@ -1,9 +1,9 @@
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
-import {HTTPService} from "../../interfaces/http/HTTPService";
-import {Application} from "express";
-import {Server} from "http";
+import {HTTPService} from '../../interfaces/http/HTTPService';
+import {Application} from 'express';
+import {Server} from 'http';
 
 export class PassportService extends HTTPService {
     init(app: Application, server: Server) {

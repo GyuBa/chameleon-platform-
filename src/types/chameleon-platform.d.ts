@@ -1,12 +1,12 @@
-import {RawData, WebSocket} from "ws";
-import {Socket} from "net";
-import SocketServer from "../server/SocketServer";
-import WSServer from "../server/WSServer";
-import DefaultSocketManager from "../server/impl/manager/DefaultSocketManager";
-import DefaultWSManager from "../server/impl/manager/DefaultWSManager";
-import * as express from "express";
-import {Application} from "express";
-import {Server} from "http";
+import {RawData, WebSocket} from 'ws';
+import {Socket} from 'net';
+import SocketServer from '../server/SocketServer';
+import WSServer from '../server/WSServer';
+import DefaultSocketManager from '../server/impl/manager/DefaultSocketManager';
+import DefaultWSManager from '../server/impl/manager/DefaultWSManager';
+import * as express from 'express';
+import {Application} from 'express';
+import {Server} from 'http';
 
 export type ISocket = Socket & { id: string };
 export type IWSocket = WebSocket & { id: string, req: any };

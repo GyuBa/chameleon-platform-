@@ -1,7 +1,7 @@
-import {v4 as uuidv4} from "uuid";
-import {RawData, ServerOptions, WebSocketServer} from "ws";
-import WSManager from "./manager/WSManager";
-import {IWSocket, WebSocketHandler} from "../types/chameleon-platform";
+import {v4 as uuidv4} from 'uuid';
+import {RawData, ServerOptions, WebSocketServer} from 'ws';
+import WSManager from './manager/WSManager';
+import {IWSocket, WebSocketHandler} from '../types/chameleon-platform';
 
 export default class WSServer<SocketData, Manager extends WSManager> {
     readonly server: WebSocketServer;

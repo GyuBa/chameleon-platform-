@@ -1,6 +1,6 @@
-import {RawData} from "ws";
-import {DefaultWSocket, DefaultWSServer, WebSocketHandler} from "../../../types/chameleon-platform";
-import {BaseService} from "../../../service/interfaces/BaseService";
+import {RawData} from 'ws';
+import {DefaultWSocket, DefaultWSServer, WebSocketHandler} from '../../../types/chameleon-platform';
+import {BaseService} from '../../../service/interfaces/BaseService';
 
 
 export default class DefaultWSHandler extends BaseService implements WebSocketHandler<DefaultWSServer, DefaultWSocket> {

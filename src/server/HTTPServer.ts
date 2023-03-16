@@ -1,8 +1,8 @@
-import * as express from "express";
-import {Application} from "express";
-import * as http from "http";
-import {Server} from "http";
-import {HTTPHandler} from "../types/chameleon-platform";
+import * as express from 'express';
+import {Application} from 'express';
+import * as http from 'http';
+import {Server} from 'http';
+import {HTTPHandler} from '../types/chameleon-platform';
 
 export default class HTTPServer {
     readonly app: Application;
@@ -25,7 +25,7 @@ export default class HTTPServer {
 
     close() {
         this.server.close(() => {
-            console.log(`HTTPServer closed.`);
+            console.log('HTTPServer closed.');
         });
     }
 }
