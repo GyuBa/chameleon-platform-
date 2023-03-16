@@ -1,29 +1,21 @@
-import * as express from 'express';
 import {source} from './DataSource';
-import {TypeormStore} from 'connect-typeorm';
-import * as session from 'express-session';
-import * as fileUpload from 'express-fileupload';
-import * as passport from 'passport';
-import {initSocket} from './socket/InitSocket';
-import {LoginService} from './service/route/LoginService';
-import {UploadService} from './service/route/UploadService';
-import {PointService} from './service/route/PointService';
-import {PassportService} from './service/passport/PassportService';
+import {AuthService} from './service/http/AuthService';
+import {UploadService} from './service/http/UploadService';
+import {PointService} from './service/http/PointService';
+import {PassportService} from './service/http/passport/PassportService';
+import HTTPServer from "./server/HTTPServer";
+import {DefaultSocketServer, DefaultWSServer} from "./types/chameleon-platform";
+import WSServer from "./server/WSServer";
+import DefaultWSManager from "./server/impl/manager/DefaultWSManager";
+import SocketServer from "./server/SocketServer";
+import DefaultSocketManager from "./server/impl/manager/DefaultSocketManager";
+import PlatformServer from "./server/core/PlatformServer";
+import DefaultWSHandler from "./server/impl/handler/DefaultWSHandler";
+import DefaultSocketHandler from "./server/impl/handler/DefaultSocketHandler";
+import {WSService} from "./service/http/WSService";
+import {ExpressService} from "./service/http/ExpressService";
 
 
-// Create and setup express app
-const app = express();
-
-app.use(express.json());
-
-// Setup express-file-upload
-app.use(fileUpload());
-
-// Passport initialize
-const passportService = new PassportService();
-passportService.init();
-
-// Establish database connection
 source
     .initialize()
     .then(() => {
@@ -33,32 +25,43 @@ source
         console.error('Error during Data Source initialization:', err);
     });
 
-// Setup express-session
-app.use(
-    session({
-        resave: false,
-        saveUninitialized: false,
-        store: new TypeormStore({
-            cleanupLimit: 2,
-            limitSubquery: false, // If using MariaDB.
-            ttl: 86400
-        }).connect(source.getRepository('Session')),
-        secret: 'keyboard cat'
-    })
-);
+const httpServer: HTTPServer = new HTTPServer();
+const wsServer: DefaultWSServer = new WSServer({
+    server: httpServer.server, path: '/websocket',
+    perMessageDeflate: {
+        zlibDeflateOptions: {
+            // See zlib defaults.
+            chunkSize: 1024,
+            memLevel: 7,
+            level: 3
+        },
+        zlibInflateOptions: {
+            chunkSize: 10 * 1024
+        },
+        // Other options settable:
+        clientNoContextTakeover: true, // Defaults to negotiated value.
+        serverNoContextTakeover: true, // Defaults to negotiated value.
+        serverMaxWindowBits: 10, // Defaults to negotiated value.
+        // Below options specified as default values.
+        concurrencyLimit: 10, // Limits zlib concurrency for perf.
+        threshold: 1024 // Size (in bytes) below which messages
+        // should not be compressed.
+    }
+}, new DefaultWSManager());
+const socketServer: DefaultSocketServer = new SocketServer(new DefaultSocketManager());
 
-// Passport
-app.use(passport.initialize());
-app.use(passport.session());
+PlatformServer.init({httpServer, wsServer, socketServer});
 
-// Routes
-app.use('/login', new LoginService().router);
-app.use('/model', new UploadService().router);
-app.use('/point', new PointService().router);
+wsServer.addHandler(new DefaultWSHandler());
+
+socketServer.addHandler(new DefaultSocketHandler());
+
+httpServer.addHandler(new ExpressService());
+httpServer.addHandler(new PassportService());
+httpServer.addHandler(new AuthService());
+httpServer.addHandler(new PointService());
+httpServer.addHandler(new UploadService());
+httpServer.addHandler(new WSService());
 
 
-// Start express server
-const server = app.listen(process.env.PORT || 5000);
-
-// WS
-initSocket(server);
+PlatformServer.listen();

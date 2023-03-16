@@ -1,10 +1,8 @@
 export const DIR_PATH_UPLOADED_IMAGE = `${__dirname}/temp/image/`;
 
-export const RESPONSE_MSG = {
+export const RESPONSE_MESSAGE = {
     OK: {'msg':'ok'},
-
     SERVER_ERROR: {'msg':'server_error'},
-
     NON_FIELD: {'msg': 'non_filed_error'},
     UNABLE_CREDENTIAL: {'msg': 'unable_credential_errors'},
     DUPLICATED_EMAIL: {'msg': 'duplicated_email_error'},
