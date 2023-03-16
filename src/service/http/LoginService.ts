@@ -1,19 +1,22 @@
-import {Request, Response} from 'express';
+import * as express from 'express';
+import {Application, Request, Response} from 'express';
 import * as bcrypt from 'bcrypt';
 import * as passport from 'passport';
 import {User} from '../../entities/User';
-import {RouteService} from '../interfaces/route/RouteService';
-import {RESPONSE_MSG} from '../../constant/Constants';
+import {RESPONSE_MESSAGE} from '../../constant/Constants';
+import {HTTPService} from "../interfaces/http/HTTPService";
+import {Server} from "http";
 
-export class LoginService extends RouteService {
-    initRouter() {
-        this.router.post('/sign-in', this.passportSignIn);
-        this.router.post('/sign-up', this.userSignUp);
-        this.router.get('/info', this.userInfo);
-        this.router.post('/modify-password', this.passwordModify);
-
-        this.router.post('/sign-in-legacy', this.userSignIn);
+export class LoginService extends HTTPService {
+    init(app: Application, server: Server) {
+        const router = express.Router();
+        router.post('/sign-in', this.passportSignIn);
+        router.post('/sign-up', this.userSignUp);
+        router.get('/info', this.userInfo);
+        router.post('/modify-password', this.passwordModify);
+        router.post('/sign-in-legacy', this.userSignIn);
         // TODO: 삭제 요망
+        app.use('/login', router);
     }
 
     /**
@@ -31,7 +34,7 @@ export class LoginService extends RouteService {
     async userSignIn(req: Request, res: Response, next: Function) {
         const {email, password} = req.body;
         if (!(email && password)) {
-            res.status(401).send(RESPONSE_MSG.NON_FIELD);
+            res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
             return;
         }
         const user = await this.userController.findUserByEmail(email);
@@ -43,7 +46,7 @@ export class LoginService extends RouteService {
                 'name': user.name
             });
         } else {
-            res.status(401).send(RESPONSE_MSG.UNABLE_CREDENTIAL);
+            res.status(401).send(RESPONSE_MESSAGE.UNABLE_CREDENTIAL);
         }
     }
 
@@ -61,12 +64,12 @@ export class LoginService extends RouteService {
      */
     async userSignUp(req: Request, res: Response, next: Function) {
         if (!(req.body.name && req.body.password && req.body.email)) {
-            res.status(401).send(RESPONSE_MSG.NON_FIELD);
+            res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
             return;
         }
 
         if (await this.userController.findUserByEmail(req.body.email)) {
-            res.status(401).send(RESPONSE_MSG.DUPLICATED_EMAIL);
+            res.status(401).send(RESPONSE_MESSAGE.DUPLICATED_EMAIL);
             return;
         }
         const {email, name} = req.body;
@@ -76,14 +79,14 @@ export class LoginService extends RouteService {
         user.name = name;
         user.password = password;
         await this.userController.createUser(user);
-        res.status(200).send(RESPONSE_MSG.OK);
+        res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
     async userInfo(req: Request, res: Response, next: Function) {
         if (req.isAuthenticated()) {
             res.status(200).send(await req.user);
         } else {
-            res.status(401).send(RESPONSE_MSG.NOT_AUTH);
+            res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
         }
     }
 
@@ -108,10 +111,10 @@ export class LoginService extends RouteService {
 
     async passwordModify(req: Request, res: Response, next: Function) {
         if (!req.isAuthenticated()) {
-            return res.status(401).send(RESPONSE_MSG.NOT_AUTH);
+            return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
         }
         if (!(req.body.password)) {
-            return res.status(401).send(RESPONSE_MSG.NON_FIELD);
+            return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
         }
         const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
         console.log(req.user);
@@ -119,10 +122,10 @@ export class LoginService extends RouteService {
             const user = new User();
             user.password = password;
             await this.userController.updateUser(user);
-            return res.status(200).send(RESPONSE_MSG.OK);
+            return res.status(200).send(RESPONSE_MESSAGE.OK);
         } catch (e) {
             console.log(e);
-            return res.status(501).send(RESPONSE_MSG.SERVER_ERROR);
+            return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
         }
     }
 }

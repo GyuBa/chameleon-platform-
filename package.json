@@ -27,8 +27,9 @@
       "passport": "^0.6.0",
       "passport-local": "^1.0.0",
       "typeorm": "0.3.11",
-      "websocket": "^1.0.34",
-      "ws": "^8.12.0"
+      "ws": "^8.12.0",
+      "xterm-addon-serialize": "^0.9.0",
+      "xterm-headless": "^5.1.0"
    },
    "devDependencies": {
       "@types/express-session": "^1.17.5",

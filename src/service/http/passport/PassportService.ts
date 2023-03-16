@@ -1,9 +1,28 @@
 import * as passport from 'passport';
 import * as LocalStrategy from 'passport-local';
 import * as bcrypt from 'bcrypt';
-import {BindService} from "../interfaces/BindService";
+import {HTTPService} from "../../interfaces/http/HTTPService";
+import {Application} from "express";
+import {Server} from "http";
 
-export class PassportService extends BindService {
+export class PassportService extends HTTPService {
+    init(app: Application, server: Server) {
+        passport.serializeUser(this.serializeUserHandler);
+
+        passport.deserializeUser(this.deserializeUserHandler);
+
+        passport.use(new LocalStrategy(
+            {
+                usernameField: 'email',
+                passwordField: 'password',
+            },
+            this.verifyHandler
+        ));
+
+        app.use(passport.initialize());
+        app.use(passport.session());
+    }
+
     serializeUserHandler(user: any, done) {
         return done(null, user.id);
     }
@@ -39,19 +58,5 @@ export class PassportService extends BindService {
             console.error(e);
             return done(e);
         }
-    }
-
-    init() {
-        passport.serializeUser(this.serializeUserHandler);
-
-        passport.deserializeUser(this.deserializeUserHandler);
-
-        passport.use(new LocalStrategy(
-            {
-                usernameField: 'email',
-                passwordField: 'password',
-            },
-            this.verifyHandler
-        ));
     }
 }
