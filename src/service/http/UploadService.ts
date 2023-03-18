@@ -16,6 +16,7 @@ export class UploadService extends HTTPService {
         router.post('/upload', this.importImage);
         router.get('/models', this.getModels);
         router.put('/update', this.updateInformation);
+        router.get('/id', this.getImageId);
         app.use('/model', router);
     }
 
@@ -76,6 +77,15 @@ export class UploadService extends HTTPService {
         return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
+    async getImageId(req: Request, res: Response, next: Function) {
+        const {host, port} = req.body;
+        const docker = new Dockerode({host, port});
+        const image = await docker.getImage("express");
+        console.log(image);
+
+        return res.status(200).send(image);
+    }
+
     async importImage(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
 
@@ -103,7 +113,8 @@ export class UploadService extends HTTPService {
         const image = await this.imageController.createImage(imageInput, region);
 
         try {
-            await docker.importImage(path, {repo: repository, tag: tags});
+            const data = await docker.importImage(path, {repo: repository, tag: tags});
+            console.log(data);
         } catch (e) {
             console.error(e);
             res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
