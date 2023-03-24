@@ -80,10 +80,15 @@ export class UploadService extends HTTPService {
     async getImageId(req: Request, res: Response, next: Function) {
         const {host, port} = req.body;
         const docker = new Dockerode({host, port});
-        const image = await docker.getImage("express");
-        console.log(image);
-
-        return res.status(200).send(image);
+        // const image = await docker.getImage('thirty_bassi');
+        // console.log(image);
+        try {
+            const images = await docker.listImages();
+            console.log(images);
+        } catch(e) {
+            console.error(e)
+        }
+        return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
     async importImage(req: Request, res: Response, next: Function) {
