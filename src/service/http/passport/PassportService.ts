@@ -52,7 +52,7 @@ export class PassportService extends HTTPService {
             return done(null, {
                 id: user.id,
                 email: user.email,
-                name: user.name
+                username: user.username
             });
         } catch (e) {
             console.error(e);

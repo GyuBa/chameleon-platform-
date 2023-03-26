@@ -11,8 +11,7 @@ export class Model extends Common {
         description: string;
 
     @ManyToOne(
-        () => User,
-        (user) => user.models
+        () => User
     )
     @JoinColumn()
         register: User;

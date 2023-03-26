@@ -56,7 +56,7 @@ export class ImageController extends BaseController<Image>{
                 .update(image)
                 .set({
                     repository: repository
-                })
+                });
         } catch (e) {
             console.error(e);
         }
@@ -69,7 +69,7 @@ export class ImageController extends BaseController<Image>{
                 .createQueryBuilder()
                 .delete()
                 .from(Image)
-                .where('id = :id', {id: imageId})
+                .where('id=:id', {id: imageId})
                 .execute();
         } catch (e) {
             console.error(e);
