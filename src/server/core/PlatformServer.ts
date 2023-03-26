@@ -20,6 +20,7 @@ export default class PlatformServer {
     }
 
     static loadConfig() {
+        // TODO: 장기적으로 DataSource.ts의 서버 설정 부분을 config.json에 포함시킬 것
         if (!fs.existsSync('config.json')) {
             fs.writeFileSync('config.json', JSON.stringify({
                 httpPort: 5000,
