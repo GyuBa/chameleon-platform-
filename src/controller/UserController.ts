@@ -76,11 +76,12 @@ export class UserController extends BaseController<User> {
     async deleteUser(user: User) {
         const userRepository = source.getRepository(User);
         try {
-            userRepository
+            await userRepository
                 .createQueryBuilder('user')
                 .delete()
                 .from(User)
-                .where('user.id=:id', user);
+                .where('user.id=:id', user)
+                .execute();
         } catch (e) {
             console.error(e);
         }

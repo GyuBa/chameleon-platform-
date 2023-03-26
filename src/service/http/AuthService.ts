@@ -43,7 +43,7 @@ export class AuthService extends HTTPService {
             res.status(200).send({
                 'id': user.id,
                 'email': user.email,
-                'name': user.name
+                'username': user.username
             });
         } else {
             res.status(401).send(RESPONSE_MESSAGE.UNABLE_CREDENTIAL);
@@ -52,7 +52,7 @@ export class AuthService extends HTTPService {
 
     /**
      * provides user sign-up
-     * req.body must include { name, password, email}
+     * req.body must include { username, password, email}
      * msg : {
      *     401 - non_field_errors
      *     401 - duplicated_email_error
@@ -63,7 +63,7 @@ export class AuthService extends HTTPService {
      * @param {Function} next - Callback Function
      */
     async userSignUp(req: Request, res: Response, next: Function) {
-        if (!(req.body.name && req.body.password && req.body.email)) {
+        if (!(req.body.username && req.body.password && req.body.email)) {
             res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
             return;
         }
@@ -72,11 +72,11 @@ export class AuthService extends HTTPService {
             res.status(401).send(RESPONSE_MESSAGE.DUPLICATED_EMAIL);
             return;
         }
-        const {email, name} = req.body;
+        const {email, username} = req.body;
         const password = await bcrypt.hashSync(req.body.password, await bcrypt.genSaltSync());
         const user: User = new User();
         user.email = email;
-        user.name = name;
+        user.username = username;
         user.password = password;
         await this.userController.createUser(user);
         res.status(200).send(RESPONSE_MESSAGE.OK);

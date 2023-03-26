@@ -67,7 +67,7 @@ export class ModelController extends BaseController<Model> {
                 .createQueryBuilder()
                 .delete()
                 .from(Model)
-                .where('id = :id', {id: modelId})
+                .where('id=:id', {id: modelId})
                 .execute();
         } catch (e) {
             console.error(e);

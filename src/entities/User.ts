@@ -13,11 +13,5 @@ export class User extends Common {
         password: string;
 
     @Column()
-        name: string;
-
-    @ManyToOne(
-        () => Model,
-        (model) => model.register
-    )
-        models: Model[];
+        username: string;
 }
