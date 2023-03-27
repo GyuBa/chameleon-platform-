@@ -7,6 +7,7 @@ import DefaultWSManager from '../server/impl/manager/DefaultWSManager';
 import * as express from 'express';
 import {Application} from 'express';
 import {Server} from 'http';
+import {MysqlConnectionOptions} from "typeorm/driver/mysql/MysqlConnectionOptions";
 
 export type ISocket = Socket & { id: string };
 export type IWSocket = WebSocket & { id: string, req: any };
@@ -51,4 +52,5 @@ export type PlatformConfig = {
     socketExternalPort: number;
     socketPort: number;
     httpPort: number;
+    db: MysqlConnectionOptions;
 };
