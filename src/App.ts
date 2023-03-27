@@ -40,7 +40,7 @@ import {ExpressService} from './service/http/ExpressService';
     }, new DefaultWSManager());
     const socketServer: DefaultSocketServer = new SocketServer(new DefaultSocketManager());
 
-    PlatformServer.init({httpServer, wsServer, socketServer});
+    await PlatformServer.init({httpServer, wsServer, socketServer});
 
     wsServer.addHandler(new DefaultWSHandler());
 

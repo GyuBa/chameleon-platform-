@@ -9,15 +9,23 @@ export default class PlatformServer {
     static wsServer: DefaultWSServer;
     static socketServer: DefaultSocketServer;
     static config: PlatformConfig;
-    private static source: DataSource;
+
+    // 외부 접근 사용 지양할 것 (테스트 목적으로만 허용됨)
+    static source: DataSource;
 
     private constructor() {
         /* empty */
     }
 
-    static init(params: { httpServer: HTTPServer, wsServer: DefaultWSServer, socketServer: DefaultSocketServer }) {
+    static async init(params: { httpServer?: HTTPServer, wsServer?: DefaultWSServer, socketServer?: DefaultSocketServer }) {
         this.loadConfig();
-        this.source = new DataSource(this.config.db);
+        this.source = new DataSource({
+            ...this.config.db,
+            entities: ['src/entities/*.ts'],
+            logging: false,
+            synchronize: true
+        });
+        await this.source.initialize();
         PlatformService.init(this.source);
 
         this.httpServer = params.httpServer;
@@ -26,7 +34,6 @@ export default class PlatformServer {
     }
 
     static loadConfig() {
-        // TODO: 장기적으로 DataSource.ts의 서버 설정 부분을 config.json에 포함시킬 것
         if (!fs.existsSync('config.json')) {
             fs.writeFileSync('config.json', JSON.stringify({
                 httpPort: 5000,
