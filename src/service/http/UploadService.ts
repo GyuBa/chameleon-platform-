@@ -16,7 +16,17 @@ export class UploadService extends HTTPService {
         router.post('/upload', this.importImage);
         router.get('/models', this.getModels);
         router.put('/update', this.updateInformation);
+        router.post('/id', this.getImageId);
         app.use('/model', router);
+    }
+
+    async getLastIndex(repository: string, tags: string) {
+        const imageList = await this.imageController.findImageLikeTag(repository, tags);
+        const lastImage = imageList[imageList.length - 1];
+        const tag = lastImage.tags;
+        const index = tag.indexOf(tags);
+        const result = tag.slice(index + tags.length + 1, tag.length)
+        return parseInt(result);
     }
 
     async getModels(req: Request, res: Response, next: Function) {
@@ -73,6 +83,24 @@ export class UploadService extends HTTPService {
             return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
         }
 
+        return res.status(200).send(RESPONSE_MESSAGE.OK);
+    }
+
+    async getImageId(req: Request, res: Response, next: Function) {
+        const {host, port} = req.body;
+        const docker = new Dockerode({host, port});
+
+        try {
+            // console.log(await docker.listImages())
+            const dockerImage1 = await docker.getImage('express:Dummy');
+            const image = await dockerImage1.inspect()
+            console.log('dockerImage1-1');
+            console.log(image.Id);
+            console.log(await (await docker.getImage(image.Id).inspect()))
+            console.log(await this.getLastIndex('express', 'Dummy'));
+        } catch(e) {
+            console.error(e)
+        }
         return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
