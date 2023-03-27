@@ -1,11 +1,11 @@
 import {Region} from '../entities/Region';
 import {Image} from '../entities/Image';
-import {ObjectLiteral} from 'typeorm';
+import {DataSource, ObjectLiteral} from 'typeorm';
 import {BaseController} from './interfaces/BaseController';
 
-export class ImageController extends BaseController<Image>{
-    constructor() {
-        super(Image);
+export class ImageController extends BaseController<Image> {
+    constructor(source: DataSource) {
+        super(source, Image);
     }
 
     async createImage(imageInput: Image, region: ObjectLiteral) {

@@ -1,10 +1,10 @@
 import {User} from '../entities/User';
-import {source} from '../DataSource';
 import {BaseController} from './interfaces/BaseController';
+import {DataSource} from "typeorm";
 
 export class UserController extends BaseController<User> {
-    constructor() {
-        super(User);
+    constructor(source: DataSource) {
+        super(source, User);
     }
 
     /**
@@ -12,9 +12,8 @@ export class UserController extends BaseController<User> {
      * @param {User} userInput - user information to be added
      */
     async createUser(user: User) {
-        const userRepository = source.getRepository(User);
         try {
-            await userRepository.save(user);
+            await this.repository.save(user);
             return user;
         } catch (e) {
             console.error(e);
@@ -26,9 +25,8 @@ export class UserController extends BaseController<User> {
      * @param {string} userEmail - user Email to be searched
      */
     async findUserByEmail(email: string) {
-        const userRepository = source.getRepository(User);
         try {
-            return await userRepository
+            return await this.repository
                 .createQueryBuilder('user')
                 .where('user.email=:email', {email})
                 .getOne();
@@ -38,9 +36,8 @@ export class UserController extends BaseController<User> {
     }
 
     async findUserById(id: number) {
-        const userRepository = source.getRepository('User');
         try {
-            return await userRepository
+            return await this.repository
                 .createQueryBuilder('user')
                 .select()
                 .where('user.id=:id', {id})
@@ -55,10 +52,8 @@ export class UserController extends BaseController<User> {
      * @param {UserInterface} userData
      */
     async updateUser(userData: User) {
-        const userRepository = source.getRepository(User);
-
         try {
-            await userRepository
+            await this.repository
                 .createQueryBuilder()
                 .update(User)
                 .set(userData)
@@ -74,9 +69,8 @@ export class UserController extends BaseController<User> {
      * @param user
      */
     async deleteUser(user: User) {
-        const userRepository = source.getRepository(User);
         try {
-            await userRepository
+            await this.repository
                 .createQueryBuilder('user')
                 .delete()
                 .from(User)

@@ -1,12 +1,12 @@
 import {Repository} from 'typeorm/repository/Repository';
-import {source} from '../../DataSource';
 import {EntityTarget} from 'typeorm/common/EntityTarget';
 import {ObjectLiteral} from 'typeorm/common/ObjectLiteral';
+import {DataSource} from "typeorm";
 
 export class BaseController<Entity extends ObjectLiteral> {
-    repository: Repository<Entity>;
+    public repository: Repository<Entity>;
 
-    constructor(target: EntityTarget<Entity>) {
+    constructor(source: DataSource, target: EntityTarget<Entity>) {
         this.repository = source.getRepository(target);
     }
 }

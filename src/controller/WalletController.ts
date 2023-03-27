@@ -1,10 +1,11 @@
 import {Wallet} from '../entities/Wallet';
 import {User} from '../entities/User';
 import {BaseController} from './interfaces/BaseController';
+import {DataSource} from "typeorm";
 
 export class WalletController extends BaseController<Wallet> {
-    constructor() {
-        super(Wallet);
+    constructor(source: DataSource) {
+        super(source, Wallet);
     }
 
     async createWallet(user: User) {

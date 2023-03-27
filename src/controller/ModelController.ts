@@ -2,11 +2,13 @@ import {Model} from '../entities/Model';
 import {Image} from '../entities/Image';
 import {User} from '../entities/User';
 import {BaseController} from './interfaces/BaseController';
+import {DataSource} from "typeorm";
 
 export class ModelController extends BaseController<Model> {
-    constructor() {
-        super(Model);
+    constructor(source: DataSource) {
+        super(source, Model);
     }
+
 
     // TODO: 밖에서 user와 image를 model안에 넣어서 model 하나를 받는 구조로 바꿀 것
     async createModel(modelInput: Model, image: Image, user: User) {
