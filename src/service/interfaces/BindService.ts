@@ -1,6 +1,6 @@
-import {BaseService} from './BaseService';
+import {PlatformService} from './PlatformService';
 
-export class BindService extends BaseService {
+export class BindService extends PlatformService {
     constructor() {
         super();
         this.bindThis();
