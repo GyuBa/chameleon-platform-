@@ -3,6 +3,7 @@ import axios from "axios";
 import {UserController} from "../../controller/UserController";
 
 PlatformServer.loadConfig();
+PlatformServer.init({});
 
 const instance = axios.create({
     baseURL: 'http://localhost:' + PlatformServer.config.httpPort,
@@ -16,7 +17,7 @@ const testAccount = {
 };
 describe('Login test', () => {
     test('sign-up', async () => {
-        await PlatformServer.init({});
+        await PlatformServer.initializeDB(true);
         // 내부적으로 데이터베이스 연결을 초기화 함 (기존의 source.initialize())
         const userController = new UserController(PlatformServer.source);
         const testUser = await userController.findUserByEmail(testAccount.email);
@@ -26,7 +27,6 @@ describe('Login test', () => {
     });
 
     test('sign-in', async () => {
-        await PlatformServer.init({});
         const result = await instance.post('/auth/sign-in', testAccount).then(r => ({
             data: r.data,
             cookie: r.headers["set-cookie"][0]

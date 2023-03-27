@@ -1,8 +1,8 @@
 import HTTPServer from '../HTTPServer';
 import * as fs from 'fs';
 import {DefaultSocketServer, DefaultWSServer, PlatformConfig} from '../../types/chameleon-platform';
-import {DataSource} from "typeorm";
-import {PlatformService} from "../../service/interfaces/PlatformService";
+import {DataSource} from 'typeorm';
+import {PlatformService} from '../../service/interfaces/PlatformService';
 
 export default class PlatformServer {
     static httpServer: HTTPServer;
@@ -17,7 +17,7 @@ export default class PlatformServer {
         /* empty */
     }
 
-    static async init(params: { httpServer?: HTTPServer, wsServer?: DefaultWSServer, socketServer?: DefaultSocketServer }) {
+    static init(params: { httpServer?: HTTPServer, wsServer?: DefaultWSServer, socketServer?: DefaultSocketServer }) {
         this.loadConfig();
         this.source = new DataSource({
             ...this.config.db,
@@ -25,7 +25,6 @@ export default class PlatformServer {
             logging: false,
             synchronize: true
         });
-        await this.source.initialize();
         PlatformService.init(this.source);
 
         this.httpServer = params.httpServer;
@@ -54,14 +53,19 @@ export default class PlatformServer {
         PlatformServer.config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
     }
 
-    static async start() {
+    static async initializeDB(ignoreError = false) {
         try {
             await this.source.initialize();
             console.log('Data Source has been initialized!');
         } catch (error) {
-            console.error('Error during Data Source initialization:', error);
+            if (!ignoreError) {
+                console.error('Error during Data Source initialization:', error);
+            }
         }
+    }
 
+    static async start() {
+        await this.initializeDB();
         this.httpServer.listen(this.config.httpPort);
         this.socketServer.listen(this.config.socketPort);
     }
@@ -76,4 +80,3 @@ export default class PlatformServer {
         return dockerServer ? this.config.dockerServers[dockerServer] : this.config.dockerServers[this.config.defaultDockerServer];
     }
 }
-
