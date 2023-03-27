@@ -1,8 +1,8 @@
 import {DefaultSocket, DefaultSocketServer, SocketHandler} from '../../../types/chameleon-platform';
-import {BaseService} from '../../../service/interfaces/BaseService';
+import {PlatformService} from '../../../service/interfaces/PlatformService';
 
 
-export default class DefaultSocketHandler extends BaseService implements SocketHandler<DefaultSocketServer, DefaultSocket> {
+export default class DefaultSocketHandler extends PlatformService implements SocketHandler<DefaultSocketServer, DefaultSocket> {
     onReady(server: DefaultSocketServer, socket: DefaultSocket) {
         /* empty */
     }

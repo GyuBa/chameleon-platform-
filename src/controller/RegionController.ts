@@ -1,9 +1,11 @@
 import {Region} from '../entities/Region';
 import {BaseController} from './interfaces/BaseController';
+import {DataSource} from "typeorm";
+import {Model} from "../entities/Model";
 
 export class RegionController extends BaseController<Region> {
-    constructor() {
-        super(Region);
+    constructor(source: DataSource) {
+        super(source, Region);
     }
 
     async createRegion(regionInput: Region) {

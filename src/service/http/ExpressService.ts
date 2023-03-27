@@ -5,7 +5,6 @@ import {Server} from 'http';
 import * as fileUpload from 'express-fileupload';
 import * as session from 'express-session';
 import {TypeormStore} from 'connect-typeorm';
-import {source} from '../../DataSource';
 
 export class ExpressService extends HTTPService {
     init(app: Application, server: Server) {
@@ -18,7 +17,7 @@ export class ExpressService extends HTTPService {
                 cleanupLimit: 2,
                 limitSubquery: false, // If using MariaDB.
                 ttl: 86400
-            }).connect(source.getRepository('Session')),
+            }).connect(this.sessionController.repository),
             secret: 'keyboard cat'
         }));
     }
