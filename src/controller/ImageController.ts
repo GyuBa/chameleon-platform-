@@ -46,6 +46,18 @@ export class ImageController extends BaseController<Image>{
         }
     }
 
+    async findImageByName(name: string) {
+        try {
+            return await this.repository
+                .createQueryBuilder()
+                .select()
+                .where('name=:name', {name})
+                .getMany();
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     async updateImage(imageId: number, imageData: { repository: string }) {
         const {repository} = imageData;
 
