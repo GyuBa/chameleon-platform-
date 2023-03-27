@@ -46,12 +46,13 @@ export class ImageController extends BaseController<Image> {
         }
     }
 
-    async findImageByName(name: string) {
+    async findImageLikeTag(repository: string, tags: string) {
         try {
             return await this.repository
                 .createQueryBuilder()
                 .select()
-                .where('name=:name', {name})
+                .where('repository=:repository', {repository})
+                .andWhere('tags like:tags', {tags: `${tags}%`})
                 .getMany();
         } catch (e) {
             console.error(e)
