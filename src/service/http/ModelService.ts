@@ -88,6 +88,24 @@ export class ModelService extends HTTPService {
         return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
+    async getImageId(req: Request, res: Response, next: Function) {
+        const {host, port} = req.body;
+        const docker = new Dockerode({host, port});
+
+        try {
+            // console.log(await docker.listImages())
+            const dockerImage1 = await docker.getImage('express:Dummy');
+            const image = await dockerImage1.inspect()
+            console.log('dockerImage1-1');
+            console.log(image.Id);
+            console.log(await (await docker.getImage(image.Id).inspect()))
+            console.log(await this.getLastIndex('express', 'Dummy'));
+        } catch(e) {
+            console.error(e)
+        }
+        return res.status(200).send(RESPONSE_MESSAGE.OK);
+    }
+
     async handleUpload(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
 
