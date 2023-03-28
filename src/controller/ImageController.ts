@@ -8,12 +8,12 @@ export class ImageController extends BaseController<Image> {
         super(source, Image);
     }
 
-    async createImage(imageInput: Image, region: ObjectLiteral) {
+    async createImage(imageInput: Image, region: Region) {
         try {
             const image = new Image();
             image.repository = imageInput.repository;
             image.tags = imageInput.tags;
-            image.region = region as Region;
+            image.region = region;
             await this.repository.save(image);
             return image;
         } catch (e) {

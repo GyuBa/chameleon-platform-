@@ -13,11 +13,4 @@ export class Region extends Common {
 
     @Column()
         port: number;
-    // TODO: 후에 인증을 위한 확장 컬럼 추가 고려
-
-    @OneToMany(
-        () => Image,
-        (image) => image.region
-    )
-        images: Image[];
 }

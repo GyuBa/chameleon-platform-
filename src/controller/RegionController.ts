@@ -1,19 +1,14 @@
 import {Region} from '../entities/Region';
 import {BaseController} from './interfaces/BaseController';
 import {DataSource} from "typeorm";
-import {Model} from "../entities/Model";
 
 export class RegionController extends BaseController<Region> {
     constructor(source: DataSource) {
         super(source, Region);
     }
 
-    async createRegion(regionInput: Region) {
+    async createRegion(region: Region) {
         try {
-            const region = new Region();
-            region.name = regionInput.name;
-            region.host = regionInput.host;
-            region.port = regionInput.port;
             await this.repository.save(region);
             return region;
         } catch (e) {

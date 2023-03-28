@@ -6,6 +6,8 @@ import {Image} from './Image';
 @Entity()
 export class Model extends Common {
     @Column()
+        uniqueName: string;
+    @Column()
         name: string;
     @Column()
         description: string;

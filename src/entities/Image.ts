@@ -13,8 +13,7 @@ export class Image extends Common {
         tags: string;
 
     @ManyToOne(
-        () => Region,
-        (region) => region.images
+        () => Region
     )
         region: Region;
 

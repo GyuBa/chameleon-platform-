@@ -10,18 +10,9 @@ export class ModelController extends BaseController<Model> {
     }
 
 
-    // TODO: 밖에서 user와 image를 model안에 넣어서 model 하나를 받는 구조로 바꿀 것
-    async createModel(modelInput: Model, image: Image, user: User) {
+    async createModel(model: Model) {
         try {
-            const model = new Model();
-            model.name = modelInput.name;
-            model.description = modelInput.description;
-            model.inputType = modelInput.inputType;
-            model.outputType = modelInput.outputType;
-            model.register = user;
-            model.image = image;
-            await this.repository.save(model);
-            return model;
+            return await this.repository.save(model);
         } catch (e) {
             console.error(e);
         }
@@ -52,7 +43,7 @@ export class ModelController extends BaseController<Model> {
         }
     }
 
-    async findModels() {
+    async getAllModel() {
         try {
             return await this.repository
                 .createQueryBuilder('model')
