@@ -1,5 +1,5 @@
 import {AuthService} from './service/http/AuthService';
-import {UploadService} from './service/http/UploadService';
+import {ModelService} from './service/http/ModelService';
 import {PointService} from './service/http/PointService';
 import {PassportService} from './service/http/passport/PassportService';
 import HTTPServer from './server/HTTPServer';
@@ -50,7 +50,7 @@ import {ExpressService} from './service/http/ExpressService';
     httpServer.addHandler(new PassportService());
     httpServer.addHandler(new AuthService());
     httpServer.addHandler(new PointService());
-    httpServer.addHandler(new UploadService());
+    httpServer.addHandler(new ModelService());
     httpServer.addHandler(new WSService());
 
     await PlatformServer.start();

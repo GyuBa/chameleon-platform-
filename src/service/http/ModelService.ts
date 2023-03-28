@@ -9,19 +9,30 @@ import {Model} from '../../entities/Model';
 import {HTTPService} from '../interfaces/http/HTTPService';
 import {Server} from 'http';
 
-// TODO: 이름으로 ModelService와 "model/" path를 사용하는 것이 낫지 않은지?
-export class UploadService extends HTTPService {
+export class ModelService extends HTTPService {
     init(app: Application, server: Server) {
         const router = express.Router();
-        router.post('/upload', this.importImage);
-        router.get('/models', this.getModels);
-        router.put('/update', this.updateInformation);
+        router.post('/upload', this.handleUpload);
+        router.get('/list', this.handleList);
+        router.put('/update', this.handleUpdate);
+        router.put('/execute', this.handleExecute);
         app.use('/model', router);
     }
 
-    async getModels(req: Request, res: Response, next: Function) {
+    async handleExecute(req: Request, res: Response, next: Function) {
         if (!req.isAuthenticated()) res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
-        const result = await this.modelController.findModels();
+        const modelId = req.body.modelId;
+        const model = await this.modelController.findModelById(modelId);
+        if (!model) res.status(401).send(RESPONSE_MESSAGE.WRONG_INFO);
+        const image = model.image;
+        const region = image.region;
+        /* const docker = new Dockerode(region);
+        docker.createImage() */
+    }
+
+    async handleList(req: Request, res: Response, next: Function) {
+        if (!req.isAuthenticated()) res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
+        const result = await this.modelController.getAllModel();
         return res.status(200).send({result});
     }
 
@@ -43,10 +54,11 @@ export class UploadService extends HTTPService {
         return '';
     }
 
-    async updateInformation(req: Request, res: Response, next: Function) {
+    async handleUpdate(req: Request, res: Response, next: Function) {
         const {modelId, repository, modelName, description, inputType, outputType} = req.body;
 
-        if (!(modelId && repository && modelName && description && inputType && outputType)) return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
+        if (!(modelId && repository && modelName && description && inputType && outputType))
+            return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
         try {
             const prevModel = await this.modelController.findModelById(modelId);
             await this.modelController.updateModel(modelId, {name: modelName, inputType, outputType, description});
@@ -76,7 +88,7 @@ export class UploadService extends HTTPService {
         return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 
-    async importImage(req: Request, res: Response, next: Function) {
+    async handleUpload(req: Request, res: Response, next: Function) {
         const {regionName, host, port, repository, tags, modelName, description, inputType, outputType} = req.body;
 
         if (!(modelName && description && inputType && outputType && req.files.file)) return res.status(501).send(RESPONSE_MESSAGE.NON_FIELD);
@@ -109,13 +121,15 @@ export class UploadService extends HTTPService {
             res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
         }
 
-        const modelInput: Model = new Model();
-        modelInput.name = modelName;
-        modelInput.description = description;
-        modelInput.inputType = inputType;
-        modelInput.outputType = outputType;
+        const model: Model = new Model();
+        model.name = modelName;
+        model.description = description;
+        model.inputType = inputType;
+        model.outputType = outputType;
+        model.image = image;
+        model.register = await this.userController.findUserById(req.user['id'] as number);
 
-        await this.modelController.createModel(modelInput, image, await this.userController.findUserById(req.user['id'] as number) as User);
+        await this.modelController.createModel(model);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
         return res.status(200).send(RESPONSE_MESSAGE.OK);
