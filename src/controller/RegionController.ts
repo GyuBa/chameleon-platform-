@@ -51,4 +51,16 @@ export class RegionController extends BaseController<Region> {
             console.error(e);
         }
     }
+
+    async findRegionByName(name: string) {
+        try {
+            return await this.repository
+                .createQueryBuilder()
+                .select()
+                .where('name=:name', {name})
+                .getOne();
+        } catch(e) {
+            console.error(e);
+        }
+    }
 }
