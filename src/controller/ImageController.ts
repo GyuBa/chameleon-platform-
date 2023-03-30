@@ -1,6 +1,6 @@
 import {Region} from '../entities/Region';
 import {Image} from '../entities/Image';
-import {DataSource, ObjectLiteral} from 'typeorm';
+import {DataSource} from 'typeorm';
 import {BaseController} from './interfaces/BaseController';
 
 export class ImageController extends BaseController<Image> {
@@ -12,8 +12,9 @@ export class ImageController extends BaseController<Image> {
         try {
             const image = new Image();
             image.repository = imageInput.repository;
-            image.tags = imageInput.tags;
+            image.tag = imageInput.tag;
             image.region = region;
+            image.uniqueId = imageInput.uniqueId;
             await this.repository.save(image);
             return image;
         } catch (e) {
@@ -33,16 +34,29 @@ export class ImageController extends BaseController<Image> {
         }
     }
 
-    async findImageByProperty(tags: string, repository: string) {
+    async findImageByProperty(tag: string, repository: string) {
         try {
             return await this.repository
                 .createQueryBuilder('region')
                 .select()
-                .where('tags=:tags', {tags})
+                .where('tag=:tag', {tag: tag})
                 .andWhere('repository=:repository', {repository})
                 .getOne();
         } catch (e) {
             console.error(e);
+        }
+    }
+
+    async findImageLikeTag(repository: string, tag: string) {
+        try {
+            return await this.repository
+                .createQueryBuilder()
+                .select()
+                .where('repository=:repository', {repository})
+                .andWhere('tag like:tag', {tag: `${tag}%`})
+                .getMany();
+        } catch (e) {
+            console.error(e)
         }
     }
 

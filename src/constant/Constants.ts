@@ -10,5 +10,6 @@ export const RESPONSE_MESSAGE = {
     NOT_AUTH: {'msg': 'not_authenticated_error'},
     NOT_FOUND: {'msg': 'not_found_error'},
     WRONG_INFO: {'msg': 'wrong_information_error'},
-    WRONG_REQ: {'msg': 'wrong_request_error'}
+    WRONG_REQ: {'msg': 'wrong_request_error'},
+    REG_NOT_FOUND: {'msg': 'region_not_found'}
 };
