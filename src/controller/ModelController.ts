@@ -1,6 +1,5 @@
 import {Model} from '../entities/Model';
 import {Image} from '../entities/Image';
-import {User} from '../entities/User';
 import {BaseController} from './interfaces/BaseController';
 import {DataSource} from "typeorm";
 
@@ -21,7 +20,7 @@ export class ModelController extends BaseController<Model> {
     async findModelById(id: number) {
         try {
             return await this.repository
-                .createQueryBuilder('model')
+                .createQueryBuilder()
                 .select()
                 .where('id=:id', {id})
                 .getOne();
@@ -34,7 +33,7 @@ export class ModelController extends BaseController<Model> {
     async findModelByImage(image: Image) {
         try {
             return await this.repository
-                .createQueryBuilder('model')
+                .createQueryBuilder()
                 .select('model')
                 .where('imageId=:id', image)
                 .getOne();
@@ -46,7 +45,7 @@ export class ModelController extends BaseController<Model> {
     async getAllModel() {
         try {
             return await this.repository
-                .createQueryBuilder('model')
+                .createQueryBuilder()
                 .select('model')
                 .getMany();
         } catch (e) {
