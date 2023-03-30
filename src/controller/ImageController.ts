@@ -12,7 +12,7 @@ export class ImageController extends BaseController<Image> {
         try {
             const image = new Image();
             image.repository = imageInput.repository;
-            image.tags = imageInput.tags;
+            image.tag = imageInput.tag;
             image.region = region;
             image.uniqueId = imageInput.uniqueId;
             await this.repository.save(image);
@@ -34,12 +34,12 @@ export class ImageController extends BaseController<Image> {
         }
     }
 
-    async findImageByProperty(tags: string, repository: string) {
+    async findImageByProperty(tag: string, repository: string) {
         try {
             return await this.repository
                 .createQueryBuilder('region')
                 .select()
-                .where('tags=:tags', {tags})
+                .where('tag=:tag', {tag: tag})
                 .andWhere('repository=:repository', {repository})
                 .getOne();
         } catch (e) {
@@ -47,13 +47,13 @@ export class ImageController extends BaseController<Image> {
         }
     }
 
-    async findImageLikeTag(repository: string, tags: string) {
+    async findImageLikeTag(repository: string, tag: string) {
         try {
             return await this.repository
                 .createQueryBuilder()
                 .select()
                 .where('repository=:repository', {repository})
-                .andWhere('tags like:tags', {tags: `${tags}%`})
+                .andWhere('tag like:tag', {tag: `${tag}%`})
                 .getMany();
         } catch (e) {
             console.error(e)

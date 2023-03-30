@@ -103,15 +103,15 @@ export class ModelService extends HTTPService {
         }
     }
     //함수 2개 요약 필요 getLastIndex, toPermalLink
-    async getLastIndex(repository: string, tags: string) {
-        const imageList = await this.imageController.findImageLikeTag(repository, tags);
+    async getLastIndex(repository: string, tag: string) {
+        const imageList = await this.imageController.findImageLikeTag(repository, tag);
         const lastImage = imageList[imageList.length - 1];
 
-        if(tags.length == lastImage.tags.length) return 0;
+        if(tag.length == lastImage.tag.length) return 0;
         else {
-            const tag = lastImage.tags;
-            const index = tag.indexOf(tags);
-            const result = tag.slice(index + tags.length + 1, tag.length)
+            const tag = lastImage.tag;
+            const index = tag.indexOf(tag);
+            const result = tag.slice(index + tag.length + 1, tag.length)
             return parseInt(result);
         }
     }
@@ -138,7 +138,7 @@ export class ModelService extends HTTPService {
         }
 
         imageInput.repository = req.user['username'].toLowerCase();
-        imageInput.tags = imageName;
+        imageInput.tag = imageName;
         const insertedImage = await docker.getImage(req.user['username'].toLowerCase() + ':' + imageName);
         imageInput.uniqueId = ((await insertedImage.inspect()).Id);
         console.log(imageInput.uniqueId);
@@ -156,7 +156,7 @@ export class ModelService extends HTTPService {
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
 
-        console.log(await docker.getImage(imageInput.repository + ':' + imageInput.tags).inspect());
+        console.log(await docker.getImage(imageInput.repository + ':' + imageInput.tag).inspect());
         return res.status(200).send(RESPONSE_MESSAGE.OK);
     }
 }

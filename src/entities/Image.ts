@@ -10,7 +10,7 @@ export class Image extends Common {
         repository: string;
 
     @Column()
-        tags: string;
+        tag: string;
 
     @Column()
         uniqueId: string;
