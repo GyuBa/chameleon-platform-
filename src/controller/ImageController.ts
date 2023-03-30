@@ -1,6 +1,6 @@
 import {Region} from '../entities/Region';
 import {Image} from '../entities/Image';
-import {DataSource, ObjectLiteral} from 'typeorm';
+import {DataSource} from 'typeorm';
 import {BaseController} from './interfaces/BaseController';
 
 export class ImageController extends BaseController<Image> {
@@ -14,6 +14,7 @@ export class ImageController extends BaseController<Image> {
             image.repository = imageInput.repository;
             image.tags = imageInput.tags;
             image.region = region;
+            image.uniqueId = imageInput.uniqueId;
             await this.repository.save(image);
             return image;
         } catch (e) {

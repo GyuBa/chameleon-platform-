@@ -12,6 +12,9 @@ export class Image extends Common {
     @Column()
         tags: string;
 
+    @Column()
+        uniqueId: string;
+
     @ManyToOne(
         () => Region
     )
@@ -22,6 +25,7 @@ export class Image extends Common {
         (model) => model.image
     )
         model: Model;
+
 }
 
 // docker - image

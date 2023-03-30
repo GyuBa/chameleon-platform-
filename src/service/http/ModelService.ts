@@ -24,7 +24,6 @@ export class ModelService extends HTTPService {
         const model = await this.modelController.findModelById(modelId);
         if (!model) res.status(401).send(RESPONSE_MESSAGE.WRONG_INFO);
         const image = model.image;
-        const region = image.region;
         /* const docker = new Dockerode(region);
         docker.createImage() */
     }
@@ -92,16 +91,11 @@ export class ModelService extends HTTPService {
             const tagName = tag.toLowerCase().replaceAll(' ','-');
             const repositoryName = repository.toLowerCase();
             const result = await this.imageController.findImageLikeTag(repositoryName, tagName);
-            console.log(repositoryName, tagName);
-            console.log('result');
-            console.log('result');
-            console.log(result);
+
             if(result.length == 0) {
                 return tagName;
             } else {
-                console.log('lastIndex');
                 const lastIndex: number = await this.getLastIndex(repositoryName, tagName);
-                console.log(lastIndex);
                 return tagName + '-' + (lastIndex + 1).toString();
             }
         } catch (e) {
@@ -121,23 +115,6 @@ export class ModelService extends HTTPService {
             return parseInt(result);
         }
     }
-    async getImageId(req: Request, res: Response, next: Function) {
-        const {host, port} = req.body;
-        const docker = new Dockerode({host, port});
-
-        try {
-            // console.log(await docker.listImages())
-            const dockerImage1 = await docker.getImage('express:Dummy');
-            const image = await dockerImage1.inspect()
-            console.log('dockerImage1-1');
-            console.log(image.Id);
-            console.log(await (await docker.getImage(image.Id).inspect()))
-            console.log(await this.getLastIndex('express', 'Dummy'));
-        } catch(e) {
-            console.error(e)
-        }
-        return res.status(200).send(RESPONSE_MESSAGE.OK);
-    }
 
     async handleUpload(req: Request, res: Response, next: Function) {
         const {regionName, modelName, description, inputType, outputType, parameter} = req.body;
@@ -153,18 +130,19 @@ export class ModelService extends HTTPService {
         const imageInput: Image = new Image();
         const imageName: string = await this.toPermalLink(req.user['username'], modelName);
 
-        console.log(req.user);
-        imageInput.repository = req.user['username'].toLowerCase();
-        imageInput.tags = imageName;
-
-        const image = await this.imageController.createImage(imageInput, region);
-
         try {
             await docker.importImage(path, {repo: req.user['username'].toLowerCase(), tag: imageName});
         } catch (e) {
             console.error(e);
             res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
         }
+
+        imageInput.repository = req.user['username'].toLowerCase();
+        imageInput.tags = imageName;
+        const insertedImage = await docker.getImage(req.user['username'].toLowerCase() + ':' + imageName);
+        imageInput.uniqueId = ((await insertedImage.inspect()).Id);
+        console.log(imageInput.uniqueId);
+        const image = await this.imageController.createImage(imageInput, region);
 
         const model: Model = new Model();
         model.name = modelName;
@@ -174,7 +152,6 @@ export class ModelService extends HTTPService {
         model.image = image;
         model.register = await this.userController.findUserById(req.user['id'] as number);
         model.uniqueName = imageName;
-        console.log('Model');
         await this.modelController.createModel(model);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
