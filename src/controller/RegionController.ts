@@ -19,7 +19,7 @@ export class RegionController extends BaseController<Region> {
     async findRegionById(id: number) {
         try {
             return await this.repository
-                .createQueryBuilder('region')
+                .createQueryBuilder()
                 .select()
                 .where('id=:id', {id})
                 .getOne();
@@ -31,7 +31,7 @@ export class RegionController extends BaseController<Region> {
     async findRegionByHost(host: string) {
         try {
             return await this.repository
-                .createQueryBuilder('region')
+                .createQueryBuilder()
                 .select()
                 .where('host=:host', {host})
                 .getOne();

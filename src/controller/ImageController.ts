@@ -25,7 +25,7 @@ export class ImageController extends BaseController<Image> {
     async findImageById(id: number) {
         try {
             return await this.repository
-                .createQueryBuilder('image')
+                .createQueryBuilder()
                 .select()
                 .where('id=:id', {id})
                 .getOne();
@@ -37,7 +37,7 @@ export class ImageController extends BaseController<Image> {
     async findImageByProperty(tag: string, repository: string) {
         try {
             return await this.repository
-                .createQueryBuilder('region')
+                .createQueryBuilder()
                 .select()
                 .where('tag=:tag', {tag: tag})
                 .andWhere('repository=:repository', {repository})

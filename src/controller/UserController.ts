@@ -27,7 +27,7 @@ export class UserController extends BaseController<User> {
     async findUserByEmail(email: string) {
         try {
             return await this.repository
-                .createQueryBuilder('user')
+                .createQueryBuilder()
                 .where('user.email=:email', {email})
                 .getOne();
         } catch (e) {
@@ -38,7 +38,7 @@ export class UserController extends BaseController<User> {
     async findUserById(id: number) {
         try {
             return await this.repository
-                .createQueryBuilder('user')
+                .createQueryBuilder()
                 .select()
                 .where('user.id=:id', {id})
                 .getOne();
@@ -71,7 +71,7 @@ export class UserController extends BaseController<User> {
     async deleteUser(user: User) {
         try {
             await this.repository
-                .createQueryBuilder('user')
+                .createQueryBuilder()
                 .delete()
                 .from(User)
                 .where('user.id=:id', user)
@@ -81,8 +81,5 @@ export class UserController extends BaseController<User> {
         }
     }
 
-    async updateMoney(user: User, amount: number) {
-        /* empty */
-    }
 
 }
