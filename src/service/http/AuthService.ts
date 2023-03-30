@@ -15,6 +15,7 @@ export class AuthService extends HTTPService {
         router.get('/info', this.userInfo);
         router.post('/modify-password', this.passwordModify);
         router.post('/sign-in-legacy', this.userSignIn);
+        router.delete('/sign-out', this.signOut);
         // TODO: 삭제 요망
         app.use('/auth', router);
     }
@@ -126,6 +127,24 @@ export class AuthService extends HTTPService {
         } catch (e) {
             console.log(e);
             return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
+        }
+    }
+
+
+    async signOut(req: Request, res: Response, next: Function) {
+        let isSessionError = false;
+
+        if(!req.isAuthenticated()) return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
+        await req.session.destroy(err => {
+            if(err) {
+                isSessionError = true;
+            }
+        })
+
+        if(isSessionError){
+            return res.status(200).send(RESPONSE_MESSAGE.OK);
+        } else {
+            return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR)
         }
     }
 }
