@@ -173,7 +173,8 @@ export class ModelService extends HTTPService {
         model.outputType = outputType;
         model.image = image;
         model.register = await this.userController.findUserById(req.user['id'] as number);
-
+        model.uniqueName = imageName;
+        console.log('Model');
         await this.modelController.createModel(model);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
