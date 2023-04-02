@@ -28,7 +28,7 @@ export class UserController extends BaseController<User> {
         try {
             return await this.repository
                 .createQueryBuilder()
-                .where('user.email=:email', {email})
+                .where('email=:email', {email})
                 .getOne();
         } catch (e) {
             console.error(e);
@@ -40,7 +40,7 @@ export class UserController extends BaseController<User> {
             return await this.repository
                 .createQueryBuilder()
                 .select()
-                .where('user.id=:id', {id})
+                .where('id=:id', {id})
                 .getOne();
         } catch (e) {
             console.error(e);
@@ -74,7 +74,7 @@ export class UserController extends BaseController<User> {
                 .createQueryBuilder()
                 .delete()
                 .from(User)
-                .where('user.id=:id', user)
+                .where('id=:id', user)
                 .execute();
         } catch (e) {
             console.error(e);
