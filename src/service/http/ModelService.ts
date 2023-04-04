@@ -88,7 +88,7 @@ export class ModelService extends HTTPService {
 
     async toPermalLink(repository: string, tag: string) {
         try {
-            const tagName = tag.toLowerCase().replaceAll(' ','-');
+            const tagName = tag.toLowerCase().replace(/ /g,'-');
             const repositoryName = repository.toLowerCase();
             const result = await this.imageController.findImageLikeTag(repositoryName, tagName);
 
