@@ -47,15 +47,30 @@ export class ModelService extends HTTPService {
 
     async handleModel(req: Request, res: Response, next: Function) {
         if (!req.isAuthenticated()) return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
-        const {uniqueName} = req.body;
+        const {uniqueName: inputUniqueName} = req.body;
         console.log(req.body);
-        if (!uniqueName) return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
+        if (!inputUniqueName) return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
 
         try {
-            const result = await this.modelController.findModelByUniqueName(uniqueName);
+            const result = await this.modelController.findModelByUniqueName(inputUniqueName);
             console.log(result);
+            const {id, createdTime, updatedTime, uniqueName, description, name: modelName, inputType, outputType, parameter} = result;
+            const {username} = result.register;
+            const {name: regionName} = result.image?.region;
             if (!result) return res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
-            else return res.status(200).send(result);
+            else return res.status(200).send({
+                id,
+                createdTime,
+                updatedTime,
+                username,
+                modelName,
+                regionName,
+                uniqueName,
+                description,
+                inputType,
+                outputType,
+                parameter
+            });
         } catch (e) {
             console.error(e);
             return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
@@ -179,6 +194,7 @@ export class ModelService extends HTTPService {
         model.image = image;
         model.register = await this.userController.findUserById(req.user['id'] as number);
         model.uniqueName = imageName;
+        model.parameter = parameter;
         await this.modelController.createModel(model);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
