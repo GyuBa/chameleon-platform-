@@ -30,4 +30,7 @@ export class Model extends Common {
 
     @Column()
         outputType: string;
+
+    @Column()
+        parameter: string;
 }

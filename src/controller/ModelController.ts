@@ -46,8 +46,15 @@ export class ModelController extends BaseController<Model> {
     async findModelByUniqueName(uniqueName: string) {
         try {
             return await this.repository
-                .createQueryBuilder()
-                .select()
+                .createQueryBuilder('model')
+                .leftJoinAndSelect('model.register', 'user')
+                .leftJoinAndSelect('model.image', 'image')
+                .leftJoinAndSelect('image.region', 'region')
+                .select('model')
+                .addSelect('user.username')
+                // .addSelect('region/.name')
+                .addSelect('image')
+                .addSelect('region.name')
                 .where('uniqueName=:uniqueName', {uniqueName:uniqueName})
                 .getOne();
         } catch (e) {
