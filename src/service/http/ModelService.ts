@@ -31,7 +31,17 @@ export class ModelService extends HTTPService {
     async handleList(req: Request, res: Response, next: Function) {
         if (!req.isAuthenticated()) res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
         const result = await this.modelController.getAllModel();
-        return res.status(200).send({result});
+        // console.log(result);
+        const responseData = result.map((model) => {
+            const {id, createdTime, uniqueName, name: modelName, inputType, outputType} = model;
+            const {username} = model.register;
+            const {name: regionName} = model.image?.region;
+            // console.log(model.image);
+            // console.log(model.image?.region.name);
+            // console.log(regionName)
+            return {id, createdTime, uniqueName, modelName, inputType, outputType, username, regionName};
+        })
+        return res.status(200).send(responseData);
     }
 
     async uploadImage(req: Request, res: Response, next: Function) {

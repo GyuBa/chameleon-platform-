@@ -47,7 +47,13 @@ export class ModelController extends BaseController<Model> {
             return await this.repository
                 .createQueryBuilder('model')
                 .leftJoinAndSelect('model.register', 'user')
-                .select(['model', 'user.username'])
+                .leftJoinAndSelect('model.image', 'image')
+                .leftJoinAndSelect('image.region', 'region')
+                .select('model')
+                .addSelect('user.username')
+                // .addSelect('region/.name')
+                .addSelect('image')
+                .addSelect('region.name')
                 .getMany();
         } catch (e) {
             console.error(e);
