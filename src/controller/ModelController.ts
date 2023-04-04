@@ -45,8 +45,9 @@ export class ModelController extends BaseController<Model> {
     async getAllModel() {
         try {
             return await this.repository
-                .createQueryBuilder()
-                .select('model')
+                .createQueryBuilder('model')
+                .leftJoinAndSelect('model.register', 'user')
+                .select(['model', 'user.username'])
                 .getMany();
         } catch (e) {
             console.error(e);
