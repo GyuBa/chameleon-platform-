@@ -42,6 +42,19 @@ export class ModelController extends BaseController<Model> {
         }
     }
 
+
+    async findModelByUniqueName(uniqueName: string) {
+        try {
+            return await this.repository
+                .createQueryBuilder()
+                .select()
+                .where('uniqueName=:uniqueName', {uniqueName:uniqueName})
+                .getOne();
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
     async getAllModel() {
         try {
             return await this.repository
@@ -91,4 +104,5 @@ export class ModelController extends BaseController<Model> {
             console.error(e);
         }
     }
+
 }

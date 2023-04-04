@@ -13,6 +13,7 @@ export class ModelService extends HTTPService {
         const router = express.Router();
         router.post('/upload', this.handleUpload);
         router.get('/list', this.handleList);
+        router.get('/info', this.handleModel);
         router.put('/update', this.handleUpdate);
         router.put('/execute', this.handleExecute);
         app.use('/model', router);
@@ -44,6 +45,22 @@ export class ModelService extends HTTPService {
         return res.status(200).send(responseData);
     }
 
+    async handleModel(req: Request, res: Response, next: Function) {
+        if (!req.isAuthenticated()) return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
+        const {uniqueName} = req.body;
+        console.log(req.body);
+        if (!uniqueName) return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
+
+        try {
+            const result = await this.modelController.findModelByUniqueName(uniqueName);
+            console.log(result);
+            if (!result) return res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+            else return res.status(200).send(result);
+        } catch (e) {
+            console.error(e);
+            return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
+        }
+    }
     async uploadImage(req: Request, res: Response, next: Function) {
         const uploadFile = req.files.file;
         console.log(uploadFile);
@@ -98,7 +115,7 @@ export class ModelService extends HTTPService {
 
     async toPermalLink(repository: string, tag: string) {
         try {
-            const tagName = tag.toLowerCase().replaceAll(' ','-');
+            const tagName = tag.toLowerCase().replace(/ /g,'-');
             const repositoryName = repository.toLowerCase();
             const result = await this.imageController.findImageLikeTag(repositoryName, tagName);
 
