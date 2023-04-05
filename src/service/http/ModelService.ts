@@ -13,6 +13,7 @@ export class ModelService extends HTTPService {
         const router = express.Router();
         router.post('/upload', this.handleUpload);
         router.get('/list', this.handleList);
+        router.get('/info', this.handleModel);
         router.put('/update', this.handleUpdate);
         router.put('/execute', this.handleExecute);
         app.use('/model', router);
@@ -29,11 +30,52 @@ export class ModelService extends HTTPService {
     }
 
     async handleList(req: Request, res: Response, next: Function) {
-        if (!req.isAuthenticated()) res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
+        if (!req.isAuthenticated()) return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
         const result = await this.modelController.getAllModel();
-        return res.status(200).send({result});
+        // console.log(result);
+        const responseData = result.map((model) => {
+            const {id, createdTime, uniqueName, name: modelName, inputType, outputType} = model;
+            const {username} = model.register;
+            const regionName = model.image?.region.name;
+            // console.log(model.image);
+            // console.log(model.image?.region.name);
+            // console.log(regionName)
+            return {id, createdTime, uniqueName, modelName, inputType, outputType, username, regionName};
+        })
+        return res.status(200).send(responseData);
     }
 
+    async handleModel(req: Request, res: Response, next: Function) {
+        if (!req.isAuthenticated()) return res.status(401).send(RESPONSE_MESSAGE.NOT_AUTH);
+        const {uniqueName: inputUniqueName} = req.body;
+        console.log(req.body);
+        if (!inputUniqueName) return res.status(401).send(RESPONSE_MESSAGE.NON_FIELD);
+
+        try {
+            const result = await this.modelController.findModelByUniqueName(inputUniqueName);
+            console.log(result);
+            const {id, createdTime, updatedTime, uniqueName, description, name: modelName, inputType, outputType, parameter} = result;
+            const {username} = result.register;
+            const {name: regionName} = result.image?.region;
+            if (!result) return res.status(404).send(RESPONSE_MESSAGE.NOT_FOUND);
+            else return res.status(200).send({
+                id,
+                createdTime,
+                updatedTime,
+                username,
+                modelName,
+                regionName,
+                uniqueName,
+                description,
+                inputType,
+                outputType,
+                parameter
+            });
+        } catch (e) {
+            console.error(e);
+            return res.status(501).send(RESPONSE_MESSAGE.SERVER_ERROR);
+        }
+    }
     async uploadImage(req: Request, res: Response, next: Function) {
         const uploadFile = req.files.file;
         console.log(uploadFile);
@@ -152,6 +194,7 @@ export class ModelService extends HTTPService {
         model.image = image;
         model.register = await this.userController.findUserById(req.user['id'] as number);
         model.uniqueName = imageName;
+        model.parameter = parameter;
         await this.modelController.createModel(model);
         // TODO: as 처리 깔끔하게
         // console.log(await findModelByImage(image));
