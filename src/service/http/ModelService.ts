@@ -34,13 +34,13 @@ export class ModelService extends HTTPService {
         const result = await this.modelController.getAllModel();
         // console.log(result);
         const responseData = result.map((model) => {
-            const {id, createdTime, uniqueName, name: modelName, inputType, outputType} = model;
+            const {id, updatedTime, uniqueName, name: modelName, inputType, outputType} = model;
             const {username} = model.register;
             const regionName = model.image?.region.name;
             // console.log(model.image);
             // console.log(model.image?.region.name);
             // console.log(regionName)
-            return {id, createdTime, uniqueName, modelName, inputType, outputType, username, regionName};
+            return {id, updatedTime, uniqueName, modelName, inputType, outputType, username, regionName};
         })
         return res.status(200).send(responseData);
     }
